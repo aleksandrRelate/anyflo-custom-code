@@ -61,7 +61,7 @@
     }
 
     /* ------------------------------------------------------------------ *
-     * 2. HERO — intro on page load: background → heading → text → buttons
+     * 2. HERO — intro on page load: background fade → heading → text → buttons
      * ------------------------------------------------------------------ */
     mm.add(A.bp.motion, function () {
       if (A.off('hero')) return;
@@ -72,22 +72,13 @@
       var reveal = A.createReveal();
       var tl = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.1 });
 
-      if (bg) tl.from(bg, { autoAlpha: 0, scale: 1.08, rotate: -4, duration: 2, ease: 'power2.out' }, 0);
+      if (bg) tl.from(bg, { autoAlpha: 0, duration: 1.6, ease: 'power2.out' }, 0);
       reveal.revealText(tl, heading, 0.2);
       if (subtext) tl.from(subtext, { autoAlpha: 0, y: 20, duration: 1 }, 0.6);
       reveal.revealButtons(tl, buttons, 0.75);
 
-      // slow drift of the background while the hero scrolls away
-      var drift = bg ? gsap.to(bg, {
-        yPercent: 12,
-        rotate: 6,
-        ease: 'none',
-        scrollTrigger: { trigger: '.section_home-hero', start: 'top top', end: 'bottom top', scrub: true }
-      }) : null;
-
       return function () {
         tl.kill();
-        if (drift) { drift.scrollTrigger.kill(); drift.kill(); }
         reveal.destroy();
       };
     });
