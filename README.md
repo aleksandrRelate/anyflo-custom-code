@@ -49,12 +49,13 @@
 | `data-platform-tab` | каждый `.home-platform_tab` | таб |
 | `data-faq-item` | каждый `.home-faq_item` | пункт аккордеона |
 | `.home-faq_answer` | блок сразу после `.home-faq_item` | ответ (опционально) |
+| `[data-leader-modal]` + `[data-leader-close]` | попапы в секции Leadership | i-я ссылка `.home-leadership_link` открывает i-й попап |
 | `data-navbar-theme="dark"` | любая тёмная секция | тёмная тема навбара (`.section_home-poc` и `.section_home-api` подхватываются и по классу) |
 
 ## Отладка
 
 `?perf=<name>[,<name>]` в URL выключает подсистему: `lenis`, `hero`, `reveal`,
-`video`, `tabs`, `faq`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
+`video`, `tabs`, `faq`, `modal`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
 
 Все анимации уважают `prefers-reduced-motion`.
 

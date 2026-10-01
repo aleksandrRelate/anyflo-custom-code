@@ -273,6 +273,77 @@
       });
     })();
 
+    /* ------------------------------------------------------------------ *
+     * 6. LEADERSHIP BIO POPUP — .home-leadership_link[i] opens [data-leader-modal][i]
+     *    Close: overlay click, Esc. Lenis is paused while a popup is open.
+     * ------------------------------------------------------------------ */
+    (function () {
+      var links = gsap.utils.toArray('.home-leadership_link');
+      var modals = gsap.utils.toArray('[data-leader-modal]');
+      if (!links.length || !modals.length || A.off('modal')) return;
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var openModal = null;
+      var lastFocus = null;
+
+      // move popups to <body> so no transformed/clipped parent affects position:fixed
+      modals.forEach(function (modal) { document.body.appendChild(modal); });
+
+      function open(modal) {
+        if (openModal) close(true);
+        openModal = modal;
+        lastFocus = document.activeElement;
+        var overlay = modal.querySelector('.leader-modal_overlay');
+        var card = modal.querySelector('.leader-modal_card');
+        modal.style.display = 'flex';
+        if (window.lenis) window.lenis.stop();
+        document.documentElement.style.overflow = 'hidden';
+        gsap.killTweensOf([overlay, card]);
+        if (reduced) {
+          gsap.set([overlay, card], { autoAlpha: 1, y: 0, scale: 1 });
+        } else {
+          gsap.fromTo(overlay, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.4, ease: 'power2.out' });
+          gsap.fromTo(card, { autoAlpha: 0, y: 40, scale: 0.96 }, { autoAlpha: 1, y: 0, scale: 1, duration: 0.6, ease: 'power4.out' });
+        }
+        card.focus({ preventScroll: true });
+      }
+
+      function close(instant) {
+        var modal = openModal;
+        if (!modal) return;
+        openModal = null;
+        var overlay = modal.querySelector('.leader-modal_overlay');
+        var card = modal.querySelector('.leader-modal_card');
+        function done() {
+          modal.style.display = 'none';
+          document.documentElement.style.overflow = '';
+          if (window.lenis) window.lenis.start();
+          if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
+        }
+        gsap.killTweensOf([overlay, card]);
+        if (instant || reduced) { done(); return; }
+        gsap.to(card, { autoAlpha: 0, y: 24, scale: 0.98, duration: 0.3, ease: 'power2.in' });
+        gsap.to(overlay, { autoAlpha: 0, duration: 0.3, ease: 'power2.in', onComplete: done });
+      }
+
+      links.forEach(function (link, i) {
+        var modal = modals[i];
+        if (!modal) return;
+        link.setAttribute('role', 'button');
+        link.setAttribute('aria-haspopup', 'dialog');
+        link.addEventListener('click', function (e) { e.preventDefault(); open(modal); });
+      });
+
+      modals.forEach(function (modal) {
+        modal.querySelectorAll('[data-leader-close]').forEach(function (el) {
+          el.addEventListener('click', function () { close(); });
+        });
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && openModal) close();
+      });
+    })();
+
     // fonts/images can shift layout after load — recalc trigger positions
     window.addEventListener('load', function () { ScrollTrigger.refresh(); });
   });
