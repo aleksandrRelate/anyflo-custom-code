@@ -377,35 +377,46 @@
       var transparent = dark.concat(light ? [light] : []);
       transparent.forEach(function (el) { el.style.backgroundColor = 'transparent'; });
 
-      // into the dark: page + white card fade to black as the first dark section rises
-      var toDark = gsap.timeline({
-        scrollTrigger: { trigger: dark[0], start: 'top 85%', end: 'top 35%', scrub: true }
-      });
-      toDark.fromTo(wrapper, { backgroundColor: CREAM }, { backgroundColor: BLACK, ease: 'none' }, 0);
-      if (card) toDark.fromTo(card, { backgroundColor: CARD }, { backgroundColor: BLACK, ease: 'none' }, 0);
+      // Timed (not scrubbed): when a boundary section reaches the middle of the viewport
+      // the colors switch over DURATION; scrolling back past it switches them back.
+      var DURATION = 0.8;
+      if (faqBg && faq) faqBg.style.backgroundColor = 'transparent';
 
-      // back to light: black → white as Leadership rises
-      var toLight = light ? gsap.fromTo(wrapper, { backgroundColor: BLACK }, {
-        backgroundColor: WHITE,
-        ease: 'none',
-        immediateRender: false,
-        scrollTrigger: { trigger: light, start: 'top 85%', end: 'top 35%', scrub: true }
-      }) : null;
-
-      // white → cream as FAQ rises (the shared cream layer goes transparent, the page carries the color)
-      var toCream = null;
-      if (faq) {
-        if (faqBg) faqBg.style.backgroundColor = 'transparent';
-        toCream = gsap.fromTo(wrapper, { backgroundColor: WHITE }, {
-          backgroundColor: CREAM,
-          ease: 'none',
-          immediateRender: false,
-          scrollTrigger: { trigger: faq, start: 'top 85%', end: 'top 35%', scrub: true }
-        });
+      function paint(pageColor, cardColor) {
+        gsap.to(wrapper, { backgroundColor: pageColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
+        if (card) gsap.to(card, { backgroundColor: cardColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
       }
 
+      // [trigger, colors after crossing (down), colors before crossing (up)]
+      var stops = [
+        [dark[0], [BLACK, BLACK], [CREAM, CARD]],   // into the dark sections
+        [light, [WHITE, BLACK], [BLACK, BLACK]],    // Leadership — back to white
+        [faq, [CREAM, BLACK], [WHITE, BLACK]]       // FAQ — white → cream
+      ].filter(function (s) { return s[0]; });
+
+      var triggers = stops.map(function (s) {
+        return ScrollTrigger.create({
+          trigger: s[0],
+          start: 'top 50%',
+          onEnter: function () { paint(s[1][0], s[1][1]); },
+          onLeaveBack: function () { paint(s[2][0], s[2][1]); }
+        });
+      });
+
+      // correct colors on load / refresh when the page opens mid-scroll
+      function sync() {
+        var y = window.scrollY + window.innerHeight * 0.5, page = CREAM, cardC = CARD;
+        stops.forEach(function (s) {
+          if (s[0].getBoundingClientRect().top + window.scrollY <= y) { page = s[1][0]; cardC = s[1][1]; }
+        });
+        gsap.set(wrapper, { backgroundColor: page });
+        if (card) gsap.set(card, { backgroundColor: cardC });
+      }
+      sync();
+
       return function () {
-        [toDark, toLight, toCream].forEach(function (t) { if (t) { t.scrollTrigger.kill(); t.kill(); } });
+        triggers.forEach(function (t) { t.kill(); });
+        gsap.killTweensOf([wrapper, card]);
         if (faqBg) faqBg.style.backgroundColor = '';
         transparent.forEach(function (el) { el.style.backgroundColor = ''; });
         wrapper.style.backgroundColor = '';
