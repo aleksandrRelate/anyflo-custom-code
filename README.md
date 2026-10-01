@@ -10,7 +10,8 @@
 | `anyflo-core.css` / `anyflo-core.js` | фундамент: perf-килл-свитч, общий `gsap.matchMedia`, брейкпоинты, фабрика reveal-анимаций (`window.Anyflo`), маски строк/кнопок. **Подключать первым.** |
 | `anyflo-page.css` / `anyflo-page.js` | страница Home: Lenis, hero-интро, reveal всех секций, табы Platform (автоплей + прогресс), аккордеон FAQ |
 | `anyflo-navbar.css` / `anyflo-navbar.js` | навбар: fixed, фон после скролла, прячется при скролле вниз, тёмная тема над `[data-navbar-theme="dark"]` |
-| `anyflo-footer.css` / `anyflo-footer.js` | футер: по скроллу белый блок сжимается в карточку со скруглёнными углами и открывает градиент снизу (оборачивает `.footer_component` в `.anyflo-footer-stage`) |
+| `anyflo-footer.css` / `anyflo-footer.js` | единый видеофон FAQ и футера; по скроллу белый футер сжимается в карточку и открывает фон снизу |
+| `footer-animation.mp4` / `footer-animation-poster.jpg` | сжатое видео фона и статичный постер для загрузки и reduced motion |
 
 `window.Anyflo` (из `anyflo-core.js`) должен загрузиться раньше остальных
 `anyflo-*.js`.
@@ -58,6 +59,23 @@
 `video`, `tabs`, `faq`, `modal`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
 
 Все анимации уважают `prefers-reduced-motion`.
+
+## Видео FAQ и футера
+
+Один `.anyflo-footer-background` покрывает `.section_home-faq` и футер.
+Исходная `.home-faq_background-image` скрывается только после инициализации
+общего фона. FAQ остаётся внутри `main`, футер — снаружи. Размер слоя
+обновляется при изменении высоты FAQ, брейкпоинтов и ScrollTrigger refresh.
+Видео загружается за 200px до появления фона и останавливается вне экрана
+или при скрытии вкладки. При reduced motion и `?perf=video` виден постер.
+
+Исходник `animation-footer.mp4` хранится локально и не публикуется. Сжатие
+как у хиро: H.264, 1280×1280, 30 fps, CRF 26, без аудио, faststart.
+
+```sh
+ffmpeg -i animation-footer.mp4 -vf 'scale=1280:1280:flags=lanczos,fps=30' -c:v libx264 -preset slow -crf 26 -pix_fmt yuv420p -an -movflags +faststart footer-animation.mp4
+ffmpeg -i footer-animation.mp4 -frames:v 1 -q:v 2 footer-animation-poster.jpg
+```
 
 ## Деплой
 

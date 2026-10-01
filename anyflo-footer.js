@@ -1,13 +1,13 @@
 /* anyflo-footer.js
  * Where: Page Settings → Before </body>  (pages with the footer, after anyflo-core.js)
  * Needs: Anyflo core, gsap, ScrollTrigger  |  .footer_component
- * Note:  on scroll the white footer shrinks into a rounded card and reveals a gradient below
+ * Note: one video background spans FAQ and footer; the white footer shrinks into a card
  */
 (function () {
   var A = window.Anyflo;
   if (!A) { console.warn('[anyflo-footer] window.Anyflo not found — load anyflo-core.js first'); return; }
 
-  var BG_IMAGE = 'https://cdn.prod.website-files.com/6abcea1f3eb451232bbfd821/6abe35b069bcc777fc133298_faq-bg.png';
+  var ASSET_BASE = 'https://aleksandrrelate.github.io/anyflo-custom-code/';
 
   A.ready(function () {
     var footer = document.querySelector('.footer_component');
@@ -15,17 +15,79 @@
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
-    /* ---- wrap the footer in a stage that carries the gradient ---- */
+    /* Keep FAQ inside <main> and footer outside it. A single positioned layer
+       covers both without moving their content or restarting the background. */
+    var faq = document.querySelector('.section_home-faq');
+    var host = footer.closest('.page-wrapper') || footer.parentElement;
+    host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
-    var bg = document.createElement('img');
-    bg.className = 'anyflo-footer-stage_bg';
-    bg.src = BG_IMAGE;
-    bg.alt = '';
+    var bg = document.createElement('div');
+    bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
+    bg.style.backgroundImage = 'url("' + ASSET_BASE + 'footer-animation-poster.jpg")';
+    var video = document.createElement('video');
+    video.className = 'anyflo-footer-video';
+    video.muted = true;
+    video.defaultMuted = true;
+    video.setAttribute('muted', '');
+    video.playsInline = true;
+    video.setAttribute('playsinline', '');
+    video.loop = true;
+    video.preload = 'none';
+    video.poster = ASSET_BASE + 'footer-animation-poster.jpg';
+    video.setAttribute('aria-hidden', 'true');
+    bg.appendChild(video);
+    host.appendChild(bg);
     footer.before(stage);
-    stage.appendChild(bg);
     stage.appendChild(footer);
+    if (faq) faq.classList.add('anyflo-shared-background');
+
+    function positionBackground() {
+      var hostRect = host.getBoundingClientRect();
+      var topRect = (faq || stage).getBoundingClientRect();
+      var bottomRect = stage.getBoundingClientRect();
+      bg.style.top = (topRect.top - hostRect.top + host.scrollTop) + 'px';
+      bg.style.height = (bottomRect.bottom - topRect.top) + 'px';
+    }
+    positionBackground();
+    if (window.ResizeObserver) {
+      var resize = new ResizeObserver(positionBackground);
+      resize.observe(host);
+      resize.observe(stage);
+      if (faq) resize.observe(faq);
+    }
+    window.addEventListener('resize', positionBackground);
+    ScrollTrigger.addEventListener('refresh', positionBackground);
+
+    /* Like the hero, force muted playback. Load only near the footer and
+       pause off screen / in background tabs. Reduced motion keeps the poster. */
+    var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    var inView = false;
+    function syncVideo() {
+      if (!inView || document.hidden || motion.matches || A.off('video')) {
+        video.pause();
+        if (motion.matches || A.off('video')) video.classList.remove('is-playing');
+        return;
+      }
+      if (!video.getAttribute('src')) video.src = ASSET_BASE + 'footer-animation.mp4';
+      var playing = video.play();
+      if (playing && playing.catch) playing.catch(function () {});
+    }
+    video.addEventListener('playing', function () { video.classList.add('is-playing'); });
+    if (window.IntersectionObserver) {
+      var visibility = new IntersectionObserver(function (entries) {
+        inView = entries[0].isIntersecting;
+        syncVideo();
+      }, { rootMargin: '200px 0px' });
+      visibility.observe(bg);
+    } else {
+      inView = true;
+      syncVideo();
+    }
+    motion.addEventListener('change', syncVideo);
+    document.addEventListener('visibilitychange', syncVideo);
+    window.addEventListener('pointerdown', syncVideo, { passive: true });
 
     function rem(n) {
       return n * parseFloat(getComputedStyle(document.documentElement).fontSize);
@@ -41,7 +103,10 @@
       var radius = desktop ? '2rem' : '1.5rem';
 
       // extra white space at the bottom of the footer — it gets clipped away to reveal the gradient
-      var setPad = function () { footer.style.paddingBottom = reveal() + 'px'; };
+      var setPad = function () {
+        footer.style.paddingBottom = reveal() + 'px';
+        positionBackground();
+      };
       setPad();
 
       var state = { p: 0 };

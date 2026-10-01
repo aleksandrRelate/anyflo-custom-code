@@ -1,27 +1,50 @@
 /* anyflo-footer.css
  * Where: Page Settings → Inside <head>  (pages with the footer)
- * Targets: .footer_component + .anyflo-footer-stage (created by anyflo-footer.js)
- * Note:  the stage holds the gradient that is revealed when the footer shrinks
+ * Targets: one shared video layer beneath FAQ and the footer card
  */
+.anyflo-footer-host {
+  position: relative;
+  isolation: isolate;
+}
 .anyflo-footer-stage {
   position: relative;
+  z-index: 1;
   overflow: hidden;
-  background-color: var(--base-colors--cream-100);
+  background: transparent;
 }
-.anyflo-footer-stage_bg {
+.anyflo-footer-background {
   position: absolute;
   left: 0;
-  bottom: 0;
   width: 100%;
-  height: auto;
-  min-height: 60%;
-  object-fit: cover;
-  object-position: center bottom;
+  overflow: hidden;
+  background-color: var(--base-colors--cream-100);
+  background-size: cover;
+  background-position: center;
   pointer-events: none;
   z-index: 0;
+}
+.anyflo-footer-video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  opacity: 0;
+  pointer-events: none;
+}
+.anyflo-footer-video.is-playing { opacity: 1; }
+.section_home-faq.anyflo-shared-background {
+  z-index: 1;
+  background: transparent;
+}
+.anyflo-shared-background .home-faq_background-image {
+  display: none;
 }
 .anyflo-footer-stage .footer_component {
   position: relative;
   z-index: 1;
   will-change: clip-path;
+}
+@media (prefers-reduced-motion: reduce) {
+  .anyflo-footer-video { display: none; }
 }
