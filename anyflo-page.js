@@ -271,6 +271,15 @@
           if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
         });
       });
+
+      // first question starts open (instantly, no animation)
+      var first = items[0];
+      var firstAnswer = first.nextElementSibling;
+      first.classList.add('is-active');
+      first.setAttribute('aria-expanded', 'true');
+      if (firstAnswer && firstAnswer.classList.contains('home-faq_answer')) {
+        gsap.set(firstAnswer, { height: 'auto' });
+      }
     })();
 
     /* ------------------------------------------------------------------ *

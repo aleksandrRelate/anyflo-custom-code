@@ -34,7 +34,8 @@
   color: var(--base-colors--black);
 }
 
-/* ---- FAQ accordion (answers are optional: .home-faq_answer after the item) ---- */
+/* ---- FAQ accordion: answers are open in Designer (custom code isn't loaded there),
+        closed on the live site; anyflo-page.js opens the first one ---- */
 .home-faq_icon {
   transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
 }
