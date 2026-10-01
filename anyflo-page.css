@@ -10,6 +10,20 @@
   mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
 }
 
+/* ---- Background color transitions: make overlays independent of the page color ---- */
+/* API code window: dissolve the window itself instead of painting a black gradient */
+.home-api_visual {
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
+  mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
+}
+.home-api_code-fade {
+  display: none;
+}
+/* Leadership portraits are PNGs on white — blend the white into whatever bg is behind */
+.home-leadership_image {
+  mix-blend-mode: multiply;
+}
+
 /* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
 .home-platform_tab {
   color: var(--grey--grey-600);
