@@ -51,7 +51,7 @@
 | `data-faq-item` | каждый `.home-faq_item` | пункт аккордеона |
 | `.home-faq_answer` | блок сразу после `.home-faq_item` | ответ (опционально) |
 | `[data-leader-modal]` + `[data-leader-close]` | попапы в секции Leadership | i-я ссылка `.home-leadership_link` открывает i-й попап |
-| `data-navbar-theme="dark"` | любая тёмная секция | тёмная тема навбара (`.section_home-poc` подхватывается и по классу) |
+| `data-navbar-theme="dark"` | любая тёмная секция | тёмная тема навбара |
 
 ## Отладка
 
