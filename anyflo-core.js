@@ -44,6 +44,20 @@
     }
   };
 
+  /* ---- web fonts ready (SplitText must measure lines with the real font) ---- */
+  A.fontsReady = function (fn) {
+    var done = false;
+    function run() { if (!done) { done = true; fn(); } }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(run);
+    else run();
+    setTimeout(run, 2500); // fallback if a font never resolves
+  };
+
+  /* ---- hide intro elements until their animation is set up ---- */
+  document.documentElement.classList.add('anyflo-loading');
+  A.loaded = function () { document.documentElement.classList.remove('anyflo-loading'); };
+  setTimeout(A.loaded, 3500); // never keep content hidden if a script fails
+
   /* ------------------------------------------------------------------ *
    * Anyflo.createReveal() — reveal context for one or more sections.
    * Words 0.6s / stagger 0.04s; buttons slide in from above through a mask.

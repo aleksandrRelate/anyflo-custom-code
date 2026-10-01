@@ -3,6 +3,12 @@
  * Targets: masks created by anyflo-core.js (SplitText lines, buttons)
  */
 
+/* hero content stays hidden until the intro timeline is ready (see Anyflo.loaded) */
+html.anyflo-loading .home-hero_content,
+html.anyflo-loading .home-hero_background {
+  visibility: hidden;
+}
+
 /* line mask for word reveals */
 .anyflo-reveal-line {
   overflow: hidden;

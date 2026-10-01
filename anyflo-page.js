@@ -62,7 +62,10 @@
 
     /* ------------------------------------------------------------------ *
      * 2. HERO — intro on page load: background fade → heading → text → buttons
+     * Hero + section reveals wait for web fonts: SplitText measures lines
+     * with the real font, otherwise headings break into wrong lines.
      * ------------------------------------------------------------------ */
+    A.fontsReady(function () {
     mm.add(A.bp.motion, function () {
       if (A.off('hero')) return;
       var heading = document.querySelector('.home-hero_text .heading-style-h1');
@@ -120,6 +123,9 @@
       });
 
       return function () { reveal.destroy(); };
+    });
+
+    A.loaded(); // intro is set up (or motion is reduced) — show the hero
     });
 
     /* ------------------------------------------------------------------ *

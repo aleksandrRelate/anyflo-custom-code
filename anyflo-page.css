@@ -4,6 +4,12 @@
  * Note:  .is-active is toggled by anyflo-page.js (Platform tabs, FAQ)
  */
 
+/* ---- Hero video: fade the frame edges so the rotated rectangle never shows a seam ---- */
+.home-hero_video {
+  -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
+}
+
 /* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
 .home-platform_tab {
   color: var(--grey--grey-600);
