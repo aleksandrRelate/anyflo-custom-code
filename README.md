@@ -10,6 +10,7 @@
 | `anyflo-core.css` / `anyflo-core.js` | фундамент: perf-килл-свитч, общий `gsap.matchMedia`, брейкпоинты, фабрика reveal-анимаций (`window.Anyflo`), маски строк/кнопок. **Подключать первым.** |
 | `anyflo-page.css` / `anyflo-page.js` | страница Home: Lenis, hero-интро, reveal всех секций, табы Platform (автоплей + прогресс), аккордеон FAQ |
 | `anyflo-navbar.css` / `anyflo-navbar.js` | навбар: fixed, фон после скролла, прячется при скролле вниз, тёмная тема над `[data-navbar-theme="dark"]` |
+| `anyflo-footer.css` / `anyflo-footer.js` | футер: по скроллу белый блок сжимается в карточку со скруглёнными углами и открывает градиент снизу (оборачивает `.footer_component` в `.anyflo-footer-stage`) |
 
 `window.Anyflo` (из `anyflo-core.js`) должен загрузиться раньше остальных
 `anyflo-*.js`.
@@ -27,6 +28,7 @@
 <link rel="stylesheet" href="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-core.css">
 <link rel="stylesheet" href="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-page.css">
 <link rel="stylesheet" href="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-navbar.css">
+<link rel="stylesheet" href="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-footer.css">
 ```
 
 **Before `</body>` tag:**
@@ -36,6 +38,7 @@
 <script src="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-core.js"></script>
 <script src="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-page.js"></script>
 <script src="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-navbar.js"></script>
+<script src="https://aleksandrrelate.github.io/anyflo-custom-code/anyflo-footer.js"></script>
 ```
 
 ## Что нужно в разметке Webflow
@@ -51,7 +54,7 @@
 ## Отладка
 
 `?perf=<name>[,<name>]` в URL выключает подсистему: `lenis`, `hero`, `reveal`,
-`tabs`, `faq`, `navbar`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
+`tabs`, `faq`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
 
 Все анимации уважают `prefers-reduced-motion`.
 

@@ -1,0 +1,25 @@
+/* anyflo-footer.css
+ * Where: Page Settings → Inside <head>  (pages with the footer)
+ * Targets: .footer_component + .anyflo-footer-stage (created by anyflo-footer.js)
+ * Note:  the stage holds the gradient that is revealed when the footer shrinks
+ */
+.anyflo-footer-stage {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--base-colors--cream-100);
+}
+.anyflo-footer-stage_bg {
+  position: absolute;
+  left: 50%;
+  bottom: -40%;
+  width: 160%;
+  height: auto;
+  transform: translateX(-50%) rotate(-60deg);
+  pointer-events: none;
+  z-index: 0;
+}
+.anyflo-footer-stage .footer_component {
+  position: relative;
+  z-index: 1;
+  will-change: clip-path;
+}
