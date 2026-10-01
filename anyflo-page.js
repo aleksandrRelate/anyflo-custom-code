@@ -368,7 +368,6 @@
       if (!wrapper || !light.length) return;
 
       var css = getComputedStyle(document.documentElement);
-      var BLACK = css.getPropertyValue('--base-colors--black').trim() || '#000000';
       var WHITE = css.getPropertyValue('--base-colors--white').trim() || '#ffffff';
       var CREAM = getComputedStyle(wrapper).backgroundColor;
       var CARD = card ? getComputedStyle(card).backgroundColor : WHITE;
