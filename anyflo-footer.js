@@ -22,11 +22,11 @@
     host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
-    var bg = document.createElement('div');
+    var bg = footer.querySelector('.anyflo-footer-background') || document.createElement('div');
     bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
     bg.style.backgroundImage = 'url("' + ASSET_BASE + 'footer-animation-poster.jpg")';
-    var video = document.createElement('video');
+    var video = bg.querySelector('video') || document.createElement('video');
     video.className = 'anyflo-footer-video';
     video.muted = true;
     video.defaultMuted = true;
@@ -70,7 +70,9 @@
         if (motion.matches || A.off('video')) video.classList.remove('is-playing');
         return;
       }
-      if (!video.getAttribute('src')) video.src = ASSET_BASE + 'footer-animation.mp4';
+      if (!video.getAttribute('src') && !video.querySelector('source[src]')) {
+        video.src = ASSET_BASE + 'footer-animation.mp4';
+      }
       var playing = video.play();
       if (playing && playing.catch) playing.catch(function () {});
     }

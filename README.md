@@ -62,7 +62,10 @@
 
 ## Видео FAQ и футера
 
-Один `.anyflo-footer-background` покрывает `.section_home-faq` и футер.
+В Designer видео находится в `footer_component → anyflo-footer-background →
+anyflo-footer-video → source` как обычные DOM-элементы, как у хиро.
+Скрипт использует этот существующий слой и на опубликованном сайте переносит
+его в `.page-wrapper`, чтобы один `.anyflo-footer-background` покрывал FAQ и футер.
 Исходная `.home-faq_background-image` скрывается только после инициализации
 общего фона. FAQ остаётся внутри `main`, футер — снаружи. Размер слоя
 обновляется при изменении высоты FAQ, брейкпоинтов и ScrollTrigger refresh.
