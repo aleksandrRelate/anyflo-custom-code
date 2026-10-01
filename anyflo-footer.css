@@ -21,17 +21,24 @@
   pointer-events: none;
   z-index: 0;
 }
+/* Figma 348:18121: 2145×1746 video rotated −60°, centred 1056px from the left
+   and 591px above the bottom edge of the footer frame (all in rem, 1rem = 16px) */
 .anyflo-footer-video {
+  position: absolute;
   display: block;
-  width: 100%;
-  height: 100%;
+  width: 134.05rem;
+  height: 109.12rem;
+  max-width: none;
+  left: calc(66.01rem - 67.025rem);
+  bottom: calc(36.93rem - 54.56rem);
+  transform: rotate(-60deg);
   object-fit: cover;
   object-position: center;
   opacity: 0;
   pointer-events: none;
   /* fade the rotated frame's edges into the cream background — no hard seam */
-  -webkit-mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
-  mask-image: radial-gradient(closest-side, #000 70%, transparent 100%);
+  -webkit-mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 82%, transparent 100%);
   transition: opacity 0.6s ease;
 }
 .anyflo-footer-video.is-playing { opacity: 1; }
