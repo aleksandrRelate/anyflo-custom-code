@@ -54,7 +54,7 @@
 ## Отладка
 
 `?perf=<name>[,<name>]` в URL выключает подсистему: `lenis`, `hero`, `reveal`,
-`tabs`, `faq`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
+`video`, `tabs`, `faq`, `navbar`, `footer`, `all`. Пример: `https://anyflo.webflow.io/?perf=lenis,reveal`.
 
 Все анимации уважают `prefers-reduced-motion`.
 

@@ -61,6 +61,39 @@
     }
 
     /* ------------------------------------------------------------------ *
+     * 1c. HERO VIDEO — Webflow strips the `muted` attribute on publish and
+     * browsers block unmuted autoplay, so mute + play from JS.
+     * Reduced motion: keep the poster, don't play.
+     * ------------------------------------------------------------------ */
+    (function () {
+      var video = document.querySelector('.home-hero_video');
+      if (!video || A.off('video')) return;
+      video.muted = true;
+      video.defaultMuted = true;
+      video.setAttribute('muted', '');
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        video.removeAttribute('autoplay');
+        video.pause();
+        return;
+      }
+      var play = function () {
+        var p = video.play();
+        if (p && p.catch) p.catch(function () {
+          // still blocked (e.g. iOS Low Power Mode) — retry on first user interaction
+          var retry = function () { video.play().catch(function () {}); };
+          ['pointerdown', 'touchstart', 'scroll', 'keydown'].forEach(function (evt) {
+            window.addEventListener(evt, retry, { once: true, passive: true });
+          });
+        });
+      };
+      if (video.readyState >= 2) play();
+      else video.addEventListener('canplay', play, { once: true });
+      play();
+    })();
+
+    /* ------------------------------------------------------------------ *
      * 2. HERO — intro on page load: background fade → heading → text → buttons
      * Hero + section reveals wait for web fonts: SplitText measures lines
      * with the real font, otherwise headings break into wrong lines.
