@@ -7,7 +7,7 @@
   var A = window.Anyflo;
   if (!A) { console.warn('[anyflo-footer] window.Anyflo not found — load anyflo-core.js first'); return; }
 
-  var BG_IMAGE = 'https://cdn.prod.website-files.com/6abcea1f3eb451232bbfd821/6abe2ab19caf32fcbb1ea9a3_hero-bg-poster.png';
+  var BG_IMAGE = 'https://cdn.prod.website-files.com/6abcea1f3eb451232bbfd821/6abe35b069bcc777fc133298_faq-bg.png';
 
   A.ready(function () {
     var footer = document.querySelector('.footer_component');
@@ -23,7 +23,6 @@
     bg.src = BG_IMAGE;
     bg.alt = '';
     bg.setAttribute('aria-hidden', 'true');
-    bg.loading = 'lazy';
     footer.before(stage);
     stage.appendChild(bg);
     stage.appendChild(footer);
