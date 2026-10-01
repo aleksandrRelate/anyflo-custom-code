@@ -1,0 +1,47 @@
+/* anyflo-page.css
+ * Where: Page Settings → Inside <head>  (Home)
+ * Targets: .home-platform_tab*, .home-platform_image, .home-faq_*
+ * Note:  .is-active is toggled by anyflo-page.js (Platform tabs, FAQ)
+ */
+
+/* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
+.home-platform_tab {
+  color: var(--grey--grey-600);
+  transition: color 0.4s ease;
+}
+.home-platform_tab.is-active {
+  color: var(--base-colors--black);
+}
+.home-platform_tab-description {
+  opacity: 0.6;
+  transition: opacity 0.4s ease;
+}
+.home-platform_tab.is-active .home-platform_tab-description {
+  opacity: 1;
+}
+.home-platform_tab-progress {
+  width: 100% !important;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+.home-platform_tab:hover {
+  color: var(--base-colors--black);
+}
+
+/* ---- FAQ accordion (answers are optional: .home-faq_answer after the item) ---- */
+.home-faq_icon {
+  transition: transform 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.home-faq_item.is-active .home-faq_icon {
+  transform: rotate(45deg);
+}
+.home-faq_answer {
+  height: 0;
+  overflow: hidden;
+}
+
+/* ---- Reduced motion: show everything static ---- */
+@media (prefers-reduced-motion: reduce) {
+  .home-platform_tab-progress { transform: scaleX(0); }
+  .home-platform_tab.is-active .home-platform_tab-progress { transform: scaleX(1); }
+}

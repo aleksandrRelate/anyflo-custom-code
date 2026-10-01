@@ -1,0 +1,22 @@
+/* anyflo-core.css
+ * Where: Page Settings → Inside <head>  (load FIRST among anyflo-*.css)
+ * Targets: masks created by anyflo-core.js (SplitText lines, buttons)
+ */
+
+/* line mask for word reveals */
+.anyflo-reveal-line {
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+/* mask for buttons sliding in from above */
+.anyflo-button-mask {
+  display: inline-grid;
+  overflow: hidden;
+  max-width: 100%;
+  vertical-align: bottom;
+}
+@media screen and (max-width: 479px) {
+  .anyflo-button-mask { width: 100%; }
+}
