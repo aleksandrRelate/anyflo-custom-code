@@ -46,7 +46,7 @@
 | `data-platform-tab` | каждый `.home-platform_tab` | таб |
 | `data-faq-item` | каждый `.home-faq_item` | пункт аккордеона |
 | `.home-faq_answer` | блок сразу после `.home-faq_item` | ответ (опционально) |
-| `data-navbar-theme="dark"` | `.section_home-poc`, `.section_home-api` | тёмная тема навбара |
+| `data-navbar-theme="dark"` | любая тёмная секция | тёмная тема навбара (`.section_home-poc` и `.section_home-api` подхватываются и по классу) |
 
 ## Отладка
 
