@@ -12,6 +12,8 @@
   A.ready(function () {
     var footer = document.querySelector('.footer_component');
     if (!footer || A.off('footer')) return;
+    // the white card that shrinks — .footer inside the component (FAQ sits above it)
+    var card = footer.querySelector(':scope > .footer') || footer;
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -105,7 +107,7 @@
 
       // extra white space at the bottom of the footer — it gets clipped away to reveal the gradient
       var setPad = function () {
-        footer.style.paddingBottom = reveal() + 'px';
+        card.style.paddingBottom = reveal() + 'px';
         positionBackground();
       };
       setPad();
@@ -114,7 +116,7 @@
       function render() {
         var p = state.p;
         var r = reveal() * p;
-        footer.style.clipPath =
+        card.style.clipPath =
           'inset(0px calc(' + side + ' * ' + p + ') ' + r + 'px calc(' + side + ' * ' + p + ') ' +
           'round calc(' + radius + ' * ' + p + '))';
       }
@@ -124,8 +126,8 @@
         ease: 'none',
         onUpdate: render,
         scrollTrigger: {
-          trigger: stage,
-          start: 'top 40%',
+          trigger: card,
+          start: 'top 50%',            // card top reaches the middle of the viewport
           end: 'bottom bottom',
           scrub: 0.6,
           invalidateOnRefresh: true,
@@ -137,8 +139,8 @@
       return function () {
         tween.scrollTrigger.kill();
         tween.kill();
-        footer.style.clipPath = '';
-        footer.style.paddingBottom = '';
+        card.style.clipPath = '';
+        card.style.paddingBottom = '';
       };
     });
   });

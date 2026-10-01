@@ -45,6 +45,8 @@
 .anyflo-footer-stage .footer_component {
   position: relative;
   z-index: 1;
+}
+.footer_component > .footer {
   will-change: clip-path;
 }
 @media (prefers-reduced-motion: reduce) {
