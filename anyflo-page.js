@@ -355,15 +355,16 @@
 
     /* ------------------------------------------------------------------ *
      * 7. BACKGROUND COLOR TRANSITIONS (ref: wearecollins.com)
-     *    light → black when the dark sections arrive, black → white on Leadership.
+     *    light → black on the PoC section, black → white on the (light) API section.
      *    Sections are made transparent from JS so the Designer keeps its colors.
      * ------------------------------------------------------------------ */
     mm.add(A.bp.motion, function () {
       if (A.off('bg')) return;
       var wrapper = document.querySelector('.page-wrapper');
       var card = document.querySelector('.home-card_wrapper');
-      var dark = gsap.utils.toArray('.section_home-poc, .section_home-api');
-      var light = document.querySelector('.section_home-leadership');
+      var dark = gsap.utils.toArray('.section_home-poc');
+      var light = document.querySelector('.section_home-api');
+      var leadership = document.querySelector('.section_home-leadership');
       var faq = document.querySelector('.section_home-faq');
       var faqBg = document.querySelector('.anyflo-footer-background'); // cream layer under FAQ + footer
       if (!wrapper || !dark.length) return;
@@ -374,7 +375,7 @@
       var CREAM = getComputedStyle(wrapper).backgroundColor;
       var CARD = card ? getComputedStyle(card).backgroundColor : WHITE;
 
-      var transparent = dark.concat(light ? [light] : []);
+      var transparent = dark.concat([light, leadership].filter(Boolean));
       transparent.forEach(function (el) { el.style.backgroundColor = 'transparent'; });
 
       // Timed (not scrubbed): when a boundary section reaches the middle of the viewport
@@ -389,8 +390,8 @@
 
       // [trigger, colors after crossing (down), colors before crossing (up)]
       var stops = [
-        [dark[0], [BLACK, BLACK], [CREAM, CARD]],   // into the dark sections
-        [light, [WHITE, BLACK], [BLACK, BLACK]],    // Leadership — back to white
+        [dark[0], [BLACK, BLACK], [CREAM, CARD]],   // into the dark PoC section
+        [light, [WHITE, BLACK], [BLACK, BLACK]],    // API — back to white
         [faq, [CREAM, BLACK], [WHITE, BLACK]]       // FAQ — white → cream
       ].filter(function (s) { return s[0]; });
 
