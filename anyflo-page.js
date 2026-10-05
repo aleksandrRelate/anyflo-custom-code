@@ -362,7 +362,6 @@
     mm.add(A.bp.motion, function () {
       if (A.off('bg')) return;
       var wrapper = document.querySelector('.page-wrapper');
-      var card = document.querySelector('.home-card_wrapper');
       var dark = gsap.utils.toArray('.section_home-poc, .section_home-api');
       var leadership = document.querySelector('.section_home-leadership');
       var faq = document.querySelector('.section_home-faq');
@@ -373,7 +372,6 @@
       var BLACK = css.getPropertyValue('--base-colors--black').trim() || '#000000';
       var WHITE = css.getPropertyValue('--base-colors--white').trim() || '#ffffff';
       var CREAM = getComputedStyle(wrapper).backgroundColor;
-      var CARD = card ? getComputedStyle(card).backgroundColor : WHITE;
 
       var transparent = dark.concat(leadership ? [leadership] : []);
       transparent.forEach(function (el) { el.style.backgroundColor = 'transparent'; });
@@ -388,48 +386,45 @@
       var themed = transparent;
       function setDark(on) { themed.forEach(function (el) { el.classList.toggle('is-dark', on); }); }
 
-      function paint(pageColor, cardColor) {
+      function paint(pageColor) {
         setDark(pageColor === BLACK);
         gsap.to(wrapper, { backgroundColor: pageColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
-        if (card) gsap.to(card, { backgroundColor: cardColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
       }
 
-      // [trigger, colors after crossing (down), colors before crossing (up)]
+      // [trigger, page color after crossing (down), before crossing (up)]; the white card (.home-card_wrapper) is never repainted
       var stops = [
-        [dark[0], [BLACK, BLACK], [CREAM, CARD]],      // PoC — cream → black
-        [leadership, [WHITE, BLACK], [BLACK, BLACK]],  // Leadership — black → white
-        [faq, [CREAM, BLACK], [WHITE, BLACK]]          // FAQ — white → cream
+        [dark[0], BLACK, CREAM],      // PoC — cream → black
+        [leadership, WHITE, BLACK],  // Leadership — black → white
+        [faq, CREAM, WHITE]          // FAQ — white → cream
       ].filter(function (s) { return s[0]; });
 
       var triggers = stops.map(function (s) {
         return ScrollTrigger.create({
           trigger: s[0],
           start: 'top 50%',
-          onEnter: function () { paint(s[1][0], s[1][1]); },
-          onLeaveBack: function () { paint(s[2][0], s[2][1]); }
+          onEnter: function () { paint(s[1]); },
+          onLeaveBack: function () { paint(s[2]); }
         });
       });
 
       // correct colors on load / refresh when the page opens mid-scroll
       function sync() {
-        var y = window.scrollY + window.innerHeight * 0.5, page = CREAM, cardC = CARD;
+        var y = window.scrollY + window.innerHeight * 0.5, page = CREAM;
         stops.forEach(function (s) {
-          if (s[0].getBoundingClientRect().top + window.scrollY <= y) { page = s[1][0]; cardC = s[1][1]; }
+          if (s[0].getBoundingClientRect().top + window.scrollY <= y) { page = s[1]; }
         });
         setDark(page === BLACK);
         gsap.set(wrapper, { backgroundColor: page });
-        if (card) gsap.set(card, { backgroundColor: cardC });
       }
       sync();
 
       return function () {
         triggers.forEach(function (t) { t.kill(); });
-        gsap.killTweensOf([wrapper, card]);
+        gsap.killTweensOf(wrapper);
         if (faqBg) faqBg.style.backgroundColor = '';
         transparent.forEach(function (el) { el.style.backgroundColor = ''; });
         setDark(false);
         wrapper.style.backgroundColor = '';
-        if (card) card.style.backgroundColor = '';
       };
     });
 
