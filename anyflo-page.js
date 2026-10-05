@@ -383,8 +383,10 @@
       var DURATION = 0.8;
       if (faqBg && faq) faqBg.style.backgroundColor = 'transparent';
 
-      // .is-dark switches PoC/API text + code window to the dark theme (anyflo-page.css)
-      function setDark(on) { dark.forEach(function (el) { el.classList.toggle('is-dark', on); }); }
+      // .is-dark switches PoC/API/Leadership text + code window to the dark theme (anyflo-page.css);
+      // Leadership gets it too so its text stays readable until the bg turns white
+      var themed = transparent;
+      function setDark(on) { themed.forEach(function (el) { el.classList.toggle('is-dark', on); }); }
 
       function paint(pageColor, cardColor) {
         setDark(pageColor === BLACK);
