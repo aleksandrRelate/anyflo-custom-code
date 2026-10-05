@@ -378,7 +378,7 @@
 
       // Timed (not scrubbed): when a boundary section reaches the middle of the viewport
       // the colors switch over DURATION; scrolling back past it switches them back.
-      var DURATION = 0.8;
+      var DURATION = 0.5;
       if (faqBg && faq) faqBg.style.backgroundColor = 'transparent';
 
       // .is-dark switches PoC/API/Leadership text + code window to the dark theme (anyflo-page.css);

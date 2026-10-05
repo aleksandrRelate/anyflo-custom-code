@@ -6,8 +6,8 @@
 .navbar_component {
   position: fixed !important;
   transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
-              background-color 0.8s cubic-bezier(0.45, 0, 0.55, 1),
-              backdrop-filter 0.8s cubic-bezier(0.45, 0, 0.55, 1);
+              background-color 0.5s cubic-bezier(0.45, 0, 0.55, 1),
+              backdrop-filter 0.5s cubic-bezier(0.45, 0, 0.55, 1);
 }
 .navbar_component.is-scrolled {
   background-color: rgba(234, 233, 229, 0.82);
@@ -47,11 +47,11 @@
   background-color: var(--base-colors--cream-100);
   color: var(--base-colors--black);
 }
-/* theme switch: same timing/easing as the page background (anyflo-page.js, 0.8s power2.inOut) */
+/* theme switch: same timing/easing as the page background (anyflo-page.js, 0.5s power2.inOut) */
 .navbar_logo,
 .navbar_link,
 .navbar_component .button {
-  transition: filter 0.8s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.8s cubic-bezier(0.45, 0, 0.55, 1), color 0.8s cubic-bezier(0.45, 0, 0.55, 1);
+  transition: filter 0.5s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.5s cubic-bezier(0.45, 0, 0.55, 1), color 0.5s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {

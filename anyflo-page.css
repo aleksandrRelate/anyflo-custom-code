@@ -31,8 +31,8 @@
 .section_home-api .button.is-grey,
 .section_home-leadership :is(h2, .heading-style-h6, p, .text-style-tagline, .home-leadership_role,
   .home-leadership_quote-mark, .home-leadership_social-link, .home-leadership_divider, .home-leadership_separator) {
-  /* same timing/easing as the background switch (0.8s power2.inOut) */
-  transition: color 0.8s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.8s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.8s cubic-bezier(0.45, 0, 0.55, 1);
+  /* same timing/easing as the background switch (0.5s power2.inOut) */
+  transition: color 0.5s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.5s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.5s cubic-bezier(0.45, 0, 0.55, 1);
 }
 .section_home-poc.is-dark h2,
 .section_home-poc.is-dark h3,
