@@ -463,6 +463,54 @@
       cards.forEach(function (el) { ro.observe(el); });
     })();
 
+    /* ------------------------------------------------------------------ *
+     * 9. WHITE CARD GOES FULL-BLEED (like the footer card, in reverse)
+     *    As is at first; while scrolling in, side margins + radius go to 0;
+     *    while leaving, they come back. The card is laid out full width and
+     *    its margins/radius are drawn with clip-path, so nothing reflows.
+     * ------------------------------------------------------------------ */
+    mm.add(A.bp.motion, function () {
+      if (A.off('card')) return;
+      var card = document.querySelector('.home-card_wrapper');
+      if (!card) return;
+      var MAX = 1440; // .home-card_wrapper max-width in Webflow
+      var radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
+      var side = 0, enter = 0, leave = 0;
+
+      function measure() {
+        card.style.maxWidth = card.style.marginLeft = card.style.marginRight = card.style.borderRadius = '';
+        var cs = getComputedStyle(card);
+        radius = parseFloat(cs.borderTopLeftRadius) || 0;
+        side = Math.max(parseFloat(cs.marginLeft) || 0, (window.innerWidth - Math.min(card.offsetWidth, MAX)) / 2);
+        card.style.maxWidth = 'none';
+        card.style.marginLeft = card.style.marginRight = '0px';
+        card.style.borderRadius = '0px';
+      }
+      function render() {
+        var k = 1 - Math.min(enter, 1 - leave); // 1 = as is, 0 = full-bleed
+        card.style.clipPath = 'inset(0px ' + (side * k).toFixed(2) + 'px round ' + (radius * k).toFixed(2) + 'px)';
+      }
+      measure();
+
+      var tIn = ScrollTrigger.create({
+        trigger: card, start: 'top 85%', end: 'top top',
+        onUpdate: function (self) { enter = self.progress; render(); },
+        onRefreshInit: function () { measure(); },
+        onRefresh: function (self) { enter = self.progress; render(); }
+      });
+      var tOut = ScrollTrigger.create({
+        trigger: card, start: 'bottom bottom', end: 'bottom 15%',
+        onUpdate: function (self) { leave = self.progress; render(); },
+        onRefresh: function (self) { leave = self.progress; render(); }
+      });
+      render();
+
+      return function () {
+        tIn.kill(); tOut.kill();
+        ['clipPath', 'maxWidth', 'marginLeft', 'marginRight', 'borderRadius'].forEach(function (k) { card.style[k] = ''; });
+      };
+    });
+
     // fonts/images can shift layout after load — recalc trigger positions
     window.addEventListener('load', function () { ScrollTrigger.refresh(); });
     // lazy images below the fold grow the page later — recalc when the page height changes
