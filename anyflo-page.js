@@ -397,7 +397,8 @@
 
       // [trigger, page color after crossing (down), before crossing (up)]; the white card (.home-card_wrapper) is never repainted
       var stops = [
-        [dark[0], BLACK, CREAM],      // PoC — cream → black
+        // PoC goes dark as soon as its heading is fully on screen, before the illustration
+        [dark[0].querySelector('.home-poc_heading') || dark[0], BLACK, CREAM, 'bottom 85%'],  // PoC — cream → black
         // Leadership flips earlier (top 75%): its portraits use multiply and would turn black on black
         [leadership, WHITE, BLACK, 'top 75%'],  // Leadership — black → white
         [faq, CREAM, WHITE]          // FAQ — white → cream
