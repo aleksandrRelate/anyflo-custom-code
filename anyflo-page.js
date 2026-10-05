@@ -431,6 +431,37 @@
       };
     });
 
+    /* ------------------------------------------------------------------ *
+     * 8. GRAINY CARD EDGES (Figma: fractal-noise displacement, scale 12)
+     *    A rounded-rect mask whose edge is displaced by noise, rebuilt on resize.
+     * ------------------------------------------------------------------ */
+    (function () {
+      if (A.off('grain')) return;
+      var cards = gsap.utils.toArray('.home-poc_image');
+      if (!cards.length || !window.ResizeObserver) return;
+      var PAD = 6; // half of the displacement scale: edge pixels move ±6px
+
+      function maskFor(el) {
+        var w = el.offsetWidth, h = el.offsetHeight;
+        if (!w || !h) return;
+        var r = parseFloat(getComputedStyle(el).borderTopLeftRadius) || 0;
+        var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + w + '" height="' + h + '">' +
+          '<filter id="g" x="0" y="0" width="100%" height="100%" filterUnits="userSpaceOnUse">' +
+          '<feTurbulence type="fractalNoise" baseFrequency="0.999" numOctaves="3" seed="6254"/>' +
+          '<feDisplacementMap in="SourceGraphic" scale="' + PAD * 2 + '" xChannelSelector="R" yChannelSelector="G"/>' +
+          '</filter>' +
+          '<rect x="' + PAD + '" y="' + PAD + '" width="' + (w - PAD * 2) + '" height="' + (h - PAD * 2) + '" rx="' + Math.max(r - PAD, 0) + '" filter="url(#g)"/>' +
+          '</svg>';
+        var url = 'url("data:image/svg+xml,' + encodeURIComponent(svg) + '")';
+        el.style.webkitMaskImage = el.style.maskImage = url;
+        el.style.webkitMaskSize = el.style.maskSize = '100% 100%';
+        el.style.webkitMaskRepeat = el.style.maskRepeat = 'no-repeat';
+      }
+
+      var ro = new ResizeObserver(function (entries) { entries.forEach(function (e) { maskFor(e.target); }); });
+      cards.forEach(function (el) { ro.observe(el); });
+    })();
+
     // fonts/images can shift layout after load — recalc trigger positions
     window.addEventListener('load', function () { ScrollTrigger.refresh(); });
     // lazy images below the fold grow the page later — recalc when the page height changes
