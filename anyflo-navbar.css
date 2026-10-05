@@ -25,20 +25,25 @@
   transform: translateY(-100%);
 }
 
-/* dark theme over [data-navbar-theme="dark"] sections */
-.navbar_component.is-dark.is-scrolled {
+/* dark theme: .is-dark over [data-navbar-theme="dark"] sections, .is-page-dark while the page bg is black (anyflo-page.js) */
+.navbar_component.is-dark.is-scrolled,
+.navbar_component.is-page-dark.is-scrolled {
   background-color: rgba(0, 0, 0, 0.72);
 }
-.navbar_component.is-dark .navbar_link {
+.navbar_component.is-dark .navbar_link,
+.navbar_component.is-page-dark .navbar_link {
   color: var(--grey--grey-400);
 }
-.navbar_component.is-dark .navbar_link:hover {
+.navbar_component.is-dark .navbar_link:hover,
+.navbar_component.is-page-dark .navbar_link:hover {
   color: var(--base-colors--white);
 }
-.navbar_component.is-dark .navbar_logo {
+.navbar_component.is-dark .navbar_logo,
+.navbar_component.is-page-dark .navbar_logo {
   filter: invert(1);
 }
-.navbar_component.is-dark .button {
+.navbar_component.is-dark .button,
+.navbar_component.is-page-dark .button {
   background-color: var(--base-colors--cream-100);
   color: var(--base-colors--black);
 }

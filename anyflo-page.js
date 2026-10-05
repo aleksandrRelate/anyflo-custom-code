@@ -384,7 +384,11 @@
       // .is-dark switches PoC/API/Leadership text + code window to the dark theme (anyflo-page.css);
       // Leadership gets it too so its text stays readable until the bg turns white
       var themed = transparent;
-      function setDark(on) { themed.forEach(function (el) { el.classList.toggle('is-dark', on); }); }
+      var nav = document.querySelector('.navbar_component');
+      function setDark(on) {
+        themed.forEach(function (el) { el.classList.toggle('is-dark', on); });
+        if (nav) nav.classList.toggle('is-page-dark', on); // navbar follows the black page bg (anyflo-navbar.css)
+      }
 
       function paint(pageColor) {
         setDark(pageColor === BLACK);

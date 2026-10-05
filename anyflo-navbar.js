@@ -29,7 +29,7 @@
     });
 
     /* ---- dark theme while the navbar overlaps a dark section ---- */
-    var darkSections = gsap.utils.toArray('[data-navbar-theme="dark"], .section_home-poc, .section_home-api');
+    var darkSections = gsap.utils.toArray('[data-navbar-theme="dark"]');
     var activeDark = 0;
     darkSections.forEach(function (section) {
       ScrollTrigger.create({
