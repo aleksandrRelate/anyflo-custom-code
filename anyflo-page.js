@@ -437,7 +437,7 @@
      * ------------------------------------------------------------------ */
     (function () {
       if (A.off('grain')) return;
-      var cards = gsap.utils.toArray('.home-poc_image');
+      var cards = gsap.utils.toArray('.home-poc_image, .home-platform_visual, .home-use-cases_card, .home-reasons_card, .home-reliable_card');
       if (!cards.length || !window.ResizeObserver) return;
       var PAD = 6; // half of the displacement scale: edge pixels move ±6px
 
