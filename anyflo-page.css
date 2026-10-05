@@ -28,7 +28,9 @@
 .section_home-poc :is(h2, h3, p, .text-style-tagline),
 .section_home-api :is(h2, h3, p, .text-style-tagline),
 .home-api_code-window, .home-api_code-window *,
-.section_home-api .button.is-grey {
+.section_home-api .button.is-grey,
+.section_home-leadership :is(h2, .heading-style-h6, p, .text-style-tagline, .home-leadership_role,
+  .home-leadership_quote-mark, .home-leadership_social-link, .home-leadership_divider, .home-leadership_separator) {
   /* same timing/easing as the background switch (0.8s power2.inOut) */
   transition: color 0.8s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.8s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.8s cubic-bezier(0.45, 0, 0.55, 1);
 }
@@ -61,6 +63,16 @@
 .section_home-api.is-dark .code-keyword { color: #8ab4ff; }
 .section_home-api.is-dark .code-function { color: #e5c07b; }
 .section_home-api.is-dark .code-string { color: #a5d6a7; }
+
+.section_home-leadership.is-dark :is(h2, .heading-style-h6, .text-style-quote, .home-leadership_social-link) {
+  color: var(--base-colors--white);
+}
+.section_home-leadership.is-dark :is(p:not(.text-style-quote), .text-style-tagline, .home-leadership_role, .home-leadership_quote-mark) {
+  color: rgba(255, 255, 255, 0.6);
+}
+.section_home-leadership.is-dark :is(.home-leadership_divider, .home-leadership_separator) {
+  background-color: rgba(255, 255, 255, 0.2);
+}
 
 /* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
 .home-platform_tab {
