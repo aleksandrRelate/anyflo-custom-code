@@ -1,6 +1,6 @@
 /* anyflo-footer.css
  * Where: Page Settings → Inside <head>  (pages with the footer)
- * Targets: one shared video layer beneath FAQ and the footer card; .form_input.is-select chevron
+ * Targets: one shared video layer beneath FAQ and the footer card; .form_input.is-select chevron; .form_input.is-textarea no resize
  */
 .anyflo-footer-host {
   position: relative;
@@ -70,4 +70,9 @@
   background-repeat: no-repeat;
   background-position: right 1rem center;
   background-size: 18px 18px;
+}
+
+/* ---- Form textarea ("Anything else?"): fixed size, no resize handle ---- */
+.form_input.is-textarea {
+  resize: none;
 }
