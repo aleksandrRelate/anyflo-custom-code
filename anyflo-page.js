@@ -383,7 +383,11 @@
       var DURATION = 0.8;
       if (faqBg && faq) faqBg.style.backgroundColor = 'transparent';
 
+      // .is-dark switches PoC/API text + code window to the dark theme (anyflo-page.css)
+      function setDark(on) { dark.forEach(function (el) { el.classList.toggle('is-dark', on); }); }
+
       function paint(pageColor, cardColor) {
+        setDark(pageColor === BLACK);
         gsap.to(wrapper, { backgroundColor: pageColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
         if (card) gsap.to(card, { backgroundColor: cardColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
       }
@@ -410,6 +414,7 @@
         stops.forEach(function (s) {
           if (s[0].getBoundingClientRect().top + window.scrollY <= y) { page = s[1][0]; cardC = s[1][1]; }
         });
+        setDark(page === BLACK);
         gsap.set(wrapper, { backgroundColor: page });
         if (card) gsap.set(card, { backgroundColor: cardC });
       }
@@ -420,6 +425,7 @@
         gsap.killTweensOf([wrapper, card]);
         if (faqBg) faqBg.style.backgroundColor = '';
         transparent.forEach(function (el) { el.style.backgroundColor = ''; });
+        setDark(false);
         wrapper.style.backgroundColor = '';
         if (card) card.style.backgroundColor = '';
       };

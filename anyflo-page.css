@@ -24,6 +24,43 @@
   mix-blend-mode: multiply;
 }
 
+/* ---- Dark PoC / API: .is-dark is toggled by anyflo-page.js with the black background ---- */
+.section_home-poc :is(h2, h3, p, .text-style-tagline),
+.section_home-api :is(h2, h3, p, .text-style-tagline),
+.home-api_code-window, .home-api_code-window *,
+.section_home-api .button.is-grey {
+  transition: color 0.8s ease, background-color 0.8s ease, border-color 0.8s ease;
+}
+.section_home-poc.is-dark h2,
+.section_home-poc.is-dark h3,
+.section_home-api.is-dark h2 {
+  color: var(--base-colors--white);
+}
+.section_home-poc.is-dark p,
+.section_home-api.is-dark p,
+.section_home-api.is-dark .text-style-tagline {
+  color: rgba(255, 255, 255, 0.6);
+}
+.section_home-api.is-dark .button.is-grey {
+  background-color: #1f1f1f;
+  color: var(--base-colors--white);
+}
+.section_home-api.is-dark .home-api_code-window {
+  background-color: #0e0e0e;
+  border-color: rgba(255, 255, 255, 0.1);
+}
+.section_home-api.is-dark .home-api_code-body,
+.section_home-api.is-dark .home-api_code-label {
+  color: rgba(255, 255, 255, 0.85);
+}
+.section_home-api.is-dark .home-api_code-label,
+.section_home-api.is-dark .code-comment {
+  color: rgba(255, 255, 255, 0.35);
+}
+.section_home-api.is-dark .code-keyword { color: #8ab4ff; }
+.section_home-api.is-dark .code-function { color: #e5c07b; }
+.section_home-api.is-dark .code-string { color: #a5d6a7; }
+
 /* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
 .home-platform_tab {
   color: var(--grey--grey-600);
