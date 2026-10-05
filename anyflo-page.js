@@ -394,14 +394,15 @@
       // [trigger, page color after crossing (down), before crossing (up)]; the white card (.home-card_wrapper) is never repainted
       var stops = [
         [dark[0], BLACK, CREAM],      // PoC — cream → black
-        [leadership, WHITE, BLACK],  // Leadership — black → white
+        // Leadership flips earlier (top 75%): its portraits use multiply and would turn black on black
+        [leadership, WHITE, BLACK, 'top 75%'],  // Leadership — black → white
         [faq, CREAM, WHITE]          // FAQ — white → cream
       ].filter(function (s) { return s[0]; });
 
       var triggers = stops.map(function (s) {
         return ScrollTrigger.create({
           trigger: s[0],
-          start: 'top 50%',
+          start: s[3] || 'top 50%',
           onEnter: function () { paint(s[1]); },
           onLeaveBack: function () { paint(s[2]); }
         });
@@ -409,10 +410,8 @@
 
       // correct colors on load / refresh when the page opens mid-scroll
       function sync() {
-        var y = window.scrollY + window.innerHeight * 0.5, page = CREAM;
-        stops.forEach(function (s) {
-          if (s[0].getBoundingClientRect().top + window.scrollY <= y) { page = s[1]; }
-        });
+        var page = CREAM;
+        triggers.forEach(function (t, i) { if (t.scroll() >= t.start) page = stops[i][1]; });
         setDark(page === BLACK);
         gsap.set(wrapper, { backgroundColor: page });
       }
