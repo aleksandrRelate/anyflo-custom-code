@@ -430,5 +430,16 @@
 
     // fonts/images can shift layout after load — recalc trigger positions
     window.addEventListener('load', function () { ScrollTrigger.refresh(); });
+    // lazy images below the fold grow the page later — recalc when the page height changes
+    if (window.ResizeObserver) {
+      var lastH = document.body.offsetHeight, refreshTimer;
+      new ResizeObserver(function () {
+        var h = document.body.offsetHeight;
+        if (h === lastH) return;
+        lastH = h;
+        clearTimeout(refreshTimer);
+        refreshTimer = setTimeout(function () { ScrollTrigger.refresh(); }, 150);
+      }).observe(document.body);
+    }
   });
 })();
