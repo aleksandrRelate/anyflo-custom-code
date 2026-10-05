@@ -29,7 +29,8 @@
 .section_home-api :is(h2, h3, p, .text-style-tagline),
 .home-api_code-window, .home-api_code-window *,
 .section_home-api .button.is-grey {
-  transition: color 0.8s ease, background-color 0.8s ease, border-color 0.8s ease;
+  /* same timing/easing as the background switch (0.8s power2.inOut) */
+  transition: color 0.8s cubic-bezier(0.45, 0, 0.55, 1), background-color 0.8s cubic-bezier(0.45, 0, 0.55, 1), border-color 0.8s cubic-bezier(0.45, 0, 0.55, 1);
 }
 .section_home-poc.is-dark h2,
 .section_home-poc.is-dark h3,
