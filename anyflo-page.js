@@ -364,7 +364,8 @@
      * 4b. RELIABLE CARDS STACK on mobile <=479px (Figma 774:3787)
      *     Header and cards are sticky (anyflo-page.css); each next card slides
      *     over and sticks 12px below the previous one. While it slides over,
-     *     the outgoing card scales 1 → 0.92 and darkens 0 → 10%.
+     *     the outgoing card scales 1 → 0.92 and darkens slightly: the deeper the
+     *     card sits in the stack, the darker it gets (5%, 4% … 1%).
      * ------------------------------------------------------------------ */
     mm.add('(max-width: 479px) and ' + A.bp.motion, function () {
       if (A.off('stack')) return;
@@ -374,11 +375,15 @@
       // sticky top of a card in px (set in CSS per nth-child)
       function stickTop(el) { return parseFloat(getComputedStyle(el).top) || 0; }
 
+      var MAX_DIM = 0.05, MIN_DIM = 0.01;
+      var steps = Math.max(cards.length - 2, 1);
+
       cards.slice(0, -1).forEach(function (card, i) {
         var next = cards[i + 1];
+        var dim = MAX_DIM - (MAX_DIM - MIN_DIM) * (i / steps);
         gsap.fromTo(card, { scale: 1, '--stack-dim': 0 }, {
           scale: 0.92,
-          '--stack-dim': 0.1,
+          '--stack-dim': dim,
           transformOrigin: '50% 0%',
           ease: 'none',
           scrollTrigger: {
