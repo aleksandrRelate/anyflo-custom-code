@@ -10,6 +10,8 @@
 | `anyflo-core.css` / `anyflo-core.js` | фундамент: perf-килл-свитч, общий `gsap.matchMedia`, брейкпоинты, фабрика reveal-анимаций (`window.Anyflo`), маски строк/кнопок. **Подключать первым.** |
 | `anyflo-page.css` / `anyflo-page.js` | страница Home: Lenis, hero-интро, reveal всех секций, табы Platform (автоплей + прогресс), аккордеон FAQ |
 | `anyflo-navbar.css` / `anyflo-navbar.js` | навбар: fixed, фон после скролла, прячется при скролле вниз, тёмная тема над `[data-navbar-theme="dark"]` |
+| `anyflo-legal.css` / `anyflo-legal.js` | юридические страницы: текст берётся из `.md` в этом репо и рендерится в пустой `.legal_component` (оглавление + разделы). Править текст — в `terms-of-service.md` |
+| `terms-of-service.md` | текст Terms of Service. Формат: `## 1. Раздел`, `1.1 Пункт`, `- (a) Подпункт`, ссылки `[text](mailto:…)`. Всё до первого `##` — это хиро, на странице не рендерится |
 | `anyflo-footer.css` / `anyflo-footer.js` | единый видеофон FAQ и футера; по скроллу белый футер сжимается в карточку и открывает фон снизу |
 | `footer-animation.mp4` / `footer-animation-poster.jpg` | сжатое видео фона и статичный постер для загрузки и reduced motion |
 
