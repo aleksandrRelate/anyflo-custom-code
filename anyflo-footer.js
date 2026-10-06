@@ -28,6 +28,20 @@
         '<path d="M2.92188 7H11.0885" stroke="currentColor" stroke-width="1.28333" stroke-linecap="round" stroke-linejoin="round"/>' +
         '<path d="M7.57812 3.5L11.0781 7L7.57812 10.5" stroke="currentColor" stroke-width="1.28333" stroke-linecap="round" stroke-linejoin="round"/></svg>');
       input.replaceWith(button);
+
+      // keep Webflow's "Please wait..." state: the label shows it while sending,
+      // and gets its text back if the error message appears
+      var form = button.form;
+      var fail = form && form.parentElement.querySelector('.w-form-fail');
+      var text = label.textContent;
+      if (form && button.dataset.wait) {
+        form.addEventListener('submit', function () { label.textContent = button.dataset.wait; });
+        if (fail && window.MutationObserver) {
+          new MutationObserver(function () {
+            if (fail.style.display === 'block') label.textContent = text;
+          }).observe(fail, { attributes: true, attributeFilter: ['style'] });
+        }
+      }
     });
     // the white card that shrinks — .footer inside the component (FAQ sits above it)
     var card = footer.querySelector(':scope > .footer') || footer;
