@@ -154,6 +154,19 @@
   }
 }
 
+/* ---- Mobile (<=479px) details from Figma 793:5770 that classes alone can't express ---- */
+@media screen and (max-width: 479px) {
+  /* hero: two buttons share the row equally, 56px tall */
+  .home-hero_content .button-group { flex-wrap: nowrap; }
+  .home-hero_content .button-group > .button { flex: 1 1 0; min-width: 0; }
+  /* FAQ questions are 17px (Body heading/17), not the 20px subtitle used by Reliable cards */
+  .home-faq_item .heading-style-subtitle {
+    font-size: 1.0625rem;
+    line-height: 1.41;
+    letter-spacing: -0.015em;
+  }
+}
+
 /* ---- FAQ accordion: answers are open in Designer (custom code isn't loaded there),
         closed on the live site; anyflo-page.js opens the first one ---- */
 .home-faq_icon {
