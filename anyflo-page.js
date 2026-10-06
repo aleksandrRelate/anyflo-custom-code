@@ -176,8 +176,55 @@
       var progressTween = null;
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      function setActive(index) {
+      // mobile (<=479px, Figma 793:5799): tabs become a swipeable slider —
+      // each slide gets its own copy of the visual, plus a segmented pagination
+      var mobile = window.matchMedia('(max-width: 479px)');
+      var visual = document.querySelector('.home-platform_visual');
+      if (visual) tabs.forEach(function (tab) {
+        var copy = visual.cloneNode(true);
+        copy.removeAttribute('style');
+        copy.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
+        copy.classList.add('is-slide');
+        copy.setAttribute('aria-hidden', 'true');
+        tab.insertBefore(copy, tab.firstChild);
+      });
+      var dots = document.createElement('div');
+      dots.className = 'home-platform_dots';
+      dots.setAttribute('aria-hidden', 'true');
+      var dotBars = tabs.map(function () {
+        var dot = document.createElement('div');
+        dot.className = 'home-platform_dot';
+        var bar = document.createElement('div');
+        bar.className = 'home-platform_dot-progress';
+        dot.appendChild(bar);
+        dots.appendChild(dot);
+        return bar;
+      });
+      root.parentNode.insertBefore(dots, root.nextSibling);
+
+      function scrollToTab(index) {
+        if (!mobile.matches) return;
+        root.scrollTo({ left: tabs[index].offsetLeft - tabs[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+      }
+
+      // swipe: when scrolling settles, the slide nearest the left edge becomes active
+      var scrollTimer = null;
+      root.addEventListener('scroll', function () {
+        if (!mobile.matches) return;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(function () {
+          var x = root.scrollLeft, best = 0;
+          tabs.forEach(function (tab, i) {
+            var d = Math.abs(tab.offsetLeft - tabs[0].offsetLeft - x);
+            if (d < Math.abs(tabs[best].offsetLeft - tabs[0].offsetLeft - x)) best = i;
+          });
+          setActive(best, true);
+        }, 120);
+      }, { passive: true });
+
+      function setActive(index, fromScroll) {
         if (index === current) return;
+        if (!fromScroll) scrollToTab(index);
         current = index;
         tabs.forEach(function (tab, i) {
           var active = i === index;
@@ -185,6 +232,8 @@
           tab.setAttribute('aria-selected', active ? 'true' : 'false');
           var bar = tab.querySelector('.home-platform_tab-progress');
           if (bar && !active) gsap.set(bar, { scaleX: 0 });
+          dotBars[i].parentNode.classList.toggle('is-active', active);
+          if (!active) gsap.set(dotBars[i], { scaleX: 0 });
         });
 
         if (image && !reduced) {
@@ -196,6 +245,7 @@
         if (progressTween) progressTween.kill();
         var bar = tabs[index].querySelector('.home-platform_tab-progress');
         if (!bar) return;
+        bar = [bar, dotBars[index]];
         if (reduced) { gsap.set(bar, { scaleX: 1 }); return; }
         progressTween = gsap.fromTo(bar, { scaleX: 0 }, {
           scaleX: 1,

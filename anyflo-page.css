@@ -98,6 +98,62 @@
   color: var(--base-colors--black);
 }
 
+/* ---- Platform on mobile (<=479px, Figma 793:5799): swipeable slides + segmented pagination.
+        anyflo-page.js adds .home-platform_visual.is-slide into each tab and .home-platform_dots ---- */
+.home-platform_visual.is-slide,
+.home-platform_dots {
+  display: none;
+}
+@media screen and (max-width: 479px) {
+  .home-platform_content > .home-platform_visual { display: none; }
+  .home-platform_tabs {
+    flex-direction: row;
+    column-gap: 0.75rem;
+    margin-right: -1rem;
+    padding-right: 1rem;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .home-platform_tabs::-webkit-scrollbar { display: none; }
+  .home-platform_tab {
+    flex: 0 0 18.75rem;
+    row-gap: 1rem;
+    scroll-snap-align: start;
+  }
+  .home-platform_tab:hover { color: inherit; }
+  .home-platform_tab-line { display: none; }
+  .home-platform_visual.is-slide {
+    display: flex;
+    width: 100%;
+    height: 25rem;
+    opacity: 0.5;
+    transition: opacity 0.4s ease;
+  }
+  .home-platform_tab.is-active .home-platform_visual.is-slide { opacity: 1; }
+  .home-platform_tab:not(.is-active) .heading-style-h4 { opacity: 0.2; }
+  .home-platform_tab:not(.is-active) .home-platform_tab-description { visibility: hidden; }
+  .home-platform_dots {
+    display: flex;
+    column-gap: 0.625rem;
+  }
+  .home-platform_dot {
+    flex: 0 0 5.5625rem;
+    height: 2px;
+    overflow: hidden;
+    border-radius: 1px;
+    background-color: rgba(111, 110, 107, 0.2);
+    transition: flex-grow 0.4s ease;
+  }
+  .home-platform_dot.is-active { flex-grow: 1; }
+  .home-platform_dot-progress {
+    height: 100%;
+    background-color: var(--base-colors--black);
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+}
+
 /* ---- FAQ accordion: answers are open in Designer (custom code isn't loaded there),
         closed on the live site; anyflo-page.js opens the first one ---- */
 .home-faq_icon {
