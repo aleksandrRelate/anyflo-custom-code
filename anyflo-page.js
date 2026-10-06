@@ -46,18 +46,6 @@
       var syncLenis = function () { lenisMq.matches ? stopLenis() : startLenis(); };
       syncLenis();
       lenisMq.addEventListener('change', syncLenis);
-
-      // anchor links (#platform, #faq, …) go through Lenis
-      document.addEventListener('click', function (e) {
-        var link = e.target.closest('a[href^="#"]');
-        if (!link || !window.lenis) return;
-        var id = link.getAttribute('href');
-        if (id.length < 2) return;
-        var target = document.querySelector(id);
-        if (!target) return;
-        e.preventDefault();
-        window.lenis.scrollTo(target, { offset: 0, duration: 1.2 });
-      });
     }
 
     /* ------------------------------------------------------------------ *
