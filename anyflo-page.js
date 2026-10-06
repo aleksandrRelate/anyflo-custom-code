@@ -176,8 +176,11 @@
       var progressTween = null;
       var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // mobile (<=479px, Figma 793:5799): tabs become a swipeable slider —
-      // each slide gets its own copy of the visual, plus a segmented pagination
+      // mobile (<=479px, Figma 793:5799): tabs become a swipeable slider, ported
+      // from Tetra CADD (tetra-cadd-features.js): every slide gets its own copy of
+      // the visual, the strip is endless ([clones][originals][clones]), the slide at
+      // the left edge becomes active while swiping, autoplay scrolls to the next
+      // slide on the right. Plus the segmented pagination from Figma.
       var mobile = window.matchMedia('(max-width: 479px)');
       var visual = document.querySelector('.home-platform_visual');
       if (visual) tabs.forEach(function (tab) {
@@ -188,6 +191,26 @@
         copy.setAttribute('aria-hidden', 'true');
         tab.insertBefore(copy, tab.firstChild);
       });
+
+      var nodes = tabs.map(function (tab) { return [tab]; });
+      var before = document.createDocumentFragment();
+      var after = document.createDocumentFragment();
+      tabs.forEach(function (tab, i) {
+        [before, after].forEach(function (frag) {
+          var c = tab.cloneNode(true);
+          c.classList.add('is-clone');
+          c.setAttribute('aria-hidden', 'true');
+          c.removeAttribute('id');
+          c.removeAttribute('data-platform-tab');
+          c.removeAttribute('style');
+          c.addEventListener('click', function () { setActive(i); });
+          frag.appendChild(c);
+          nodes[i].push(c);
+        });
+      });
+      root.insertBefore(before, tabs[0]);
+      root.appendChild(after);
+
       var dots = document.createElement('div');
       dots.className = 'home-platform_dots';
       dots.setAttribute('aria-hidden', 'true');
@@ -202,39 +225,85 @@
       });
       root.parentNode.insertBefore(dots, root.nextSibling);
 
-      function scrollToTab(index) {
+      var bars = nodes.map(function (arr, i) {
+        return arr.map(function (n) { return n.querySelector('.home-platform_tab-progress'); })
+          .filter(Boolean).concat(dotBars[i]);
+      });
+
+      var autoScrolling = false;
+      var autoScrollTimer = null;
+      function edgeX() { return root.getBoundingClientRect().left; }
+      // width of one set = distance between an original and its left clone
+      function setWidth() {
+        return nodes[0][0].getBoundingClientRect().left - nodes[0][1].getBoundingClientRect().left;
+      }
+      function jump(dx) { root.scrollLeft += dx; }
+      // keep the position inside the middle set so there are slides on both sides
+      function normalize() {
         if (!mobile.matches) return;
-        root.scrollTo({ left: tabs[index].offsetLeft - tabs[0].offsetLeft, behavior: reduced ? 'auto' : 'smooth' });
+        var w = setWidth();
+        if (!w) return;
+        var pitch = w / tabs.length;
+        var first = nodes[0][0].getBoundingClientRect().left - edgeX();
+        if (first > pitch / 2) jump(w);
+        else if (first < -w + pitch / 2) jump(-w);
+      }
+      // autoplay: one smooth scroll to the nearest copy of the slide on the right
+      function scrollToTab(i) {
+        if (!mobile.matches) return;
+        var edge = edgeX(), best = null;
+        nodes[i].forEach(function (n) {
+          var d = n.getBoundingClientRect().left - edge;
+          if (d > -2 && (best === null || d < best)) best = d;
+        });
+        if (best === null) return;
+        autoScrolling = true;
+        clearTimeout(autoScrollTimer);
+        root.scrollTo({ left: root.scrollLeft + best, behavior: reduced ? 'auto' : 'smooth' });
+        autoScrollTimer = setTimeout(function () { autoScrolling = false; normalize(); }, 800);
+      }
+      function nearestToEdge() {
+        var edge = edgeX(), best = 0, bestD = Infinity;
+        nodes.forEach(function (arr, j) {
+          arr.forEach(function (n) {
+            var d = Math.abs(n.getBoundingClientRect().left - edge);
+            if (d < bestD) { bestD = d; best = j; }
+          });
+        });
+        return best;
       }
 
-      // swipe: when scrolling settles, the slide nearest the left edge becomes active
-      var scrollTimer = null;
+      if (mobile.matches) jump(setWidth()); // start on the originals (middle set)
+      mobile.addEventListener && mobile.addEventListener('change', function (e) {
+        if (e.matches) { root.scrollLeft = 0; jump(setWidth()); scrollToTab(current); }
+      });
+
+      // swipe: the slide nearest the left edge is active right away; the jump
+      // back into the middle set happens once scrolling stops
+      var swipeTimer = null, swipeRaf = 0;
       root.addEventListener('scroll', function () {
-        if (!mobile.matches) return;
-        clearTimeout(scrollTimer);
-        scrollTimer = setTimeout(function () {
-          var x = root.scrollLeft, best = 0;
-          tabs.forEach(function (tab, i) {
-            var d = Math.abs(tab.offsetLeft - tabs[0].offsetLeft - x);
-            if (d < Math.abs(tabs[best].offsetLeft - tabs[0].offsetLeft - x)) best = i;
-          });
-          setActive(best, true);
-        }, 120);
+        if (!mobile.matches || autoScrolling) return;
+        if (!swipeRaf) swipeRaf = requestAnimationFrame(function () {
+          swipeRaf = 0;
+          var best = nearestToEdge();
+          if (best !== current) setActive(best, true);
+        });
+        clearTimeout(swipeTimer);
+        swipeTimer = setTimeout(normalize, 150);
       }, { passive: true });
 
-      function setActive(index, fromScroll) {
+      function setActive(index, fromSwipe) {
         if (index === current) return;
-        if (!fromScroll) scrollToTab(index);
+        var wasStarted = current !== -1;
         current = index;
-        tabs.forEach(function (tab, i) {
+        nodes.forEach(function (arr, i) {
           var active = i === index;
-          tab.classList.toggle('is-active', active);
-          tab.setAttribute('aria-selected', active ? 'true' : 'false');
-          var bar = tab.querySelector('.home-platform_tab-progress');
-          if (bar && !active) gsap.set(bar, { scaleX: 0 });
+          arr.forEach(function (n) { n.classList.toggle('is-active', active); });
+          tabs[i].setAttribute('aria-selected', active ? 'true' : 'false');
           dotBars[i].parentNode.classList.toggle('is-active', active);
-          if (!active) gsap.set(dotBars[i], { scaleX: 0 });
+          if (!active) gsap.set(bars[i], { scaleX: 0 });
         });
+        if (wasStarted && !fromSwipe) scrollToTab(index);
 
         if (image && !reduced) {
           gsap.fromTo(image,
@@ -243,11 +312,8 @@
         }
 
         if (progressTween) progressTween.kill();
-        var bar = tabs[index].querySelector('.home-platform_tab-progress');
-        if (!bar) return;
-        bar = [bar, dotBars[index]];
-        if (reduced) { gsap.set(bar, { scaleX: 1 }); return; }
-        progressTween = gsap.fromTo(bar, { scaleX: 0 }, {
+        if (reduced) { gsap.set(bars[index], { scaleX: 1 }); return; }
+        progressTween = gsap.fromTo(bars[index], { scaleX: 0 }, {
           scaleX: 1,
           duration: DURATION,
           ease: 'none',

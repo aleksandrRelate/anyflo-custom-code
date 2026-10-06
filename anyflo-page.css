@@ -101,7 +101,8 @@
 /* ---- Platform on mobile (<=479px, Figma 793:5799): swipeable slides + segmented pagination.
         anyflo-page.js adds .home-platform_visual.is-slide into each tab and .home-platform_dots ---- */
 .home-platform_visual.is-slide,
-.home-platform_dots {
+.home-platform_dots,
+.home-platform_tab.is-clone {
   display: none;
 }
 @media screen and (max-width: 479px) {
@@ -114,7 +115,10 @@
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
   }
+  .home-platform_tab.is-clone { display: flex; }
   .home-platform_tabs::-webkit-scrollbar { display: none; }
   .home-platform_tab {
     flex: 0 0 18.75rem;
