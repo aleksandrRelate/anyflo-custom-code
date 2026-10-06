@@ -1,6 +1,6 @@
 /* anyflo-legal.css
  * Where: Page Settings → Inside <head>  (legal pages)
- * Targets: markup rendered by anyflo-legal.js inside [data-legal-content]
+ * Targets: .legal_* blocks in Webflow; .legal_toc-link is created by anyflo-legal.js
  */
 .legal_component {
   display: grid;
@@ -9,7 +9,6 @@
   align-items: start;
   padding-top: 6rem;
   padding-bottom: 2rem;
-  min-height: 100vh; /* holds space while the text loads */
 }
 .legal_toc {
   position: sticky;
@@ -52,7 +51,7 @@
   text-decoration: underline;
 }
 
-@media screen and (max-width: 991px) {
+@media screen and (max-width: 479px) {
   .legal_component {
     grid-template-columns: 1fr;
     row-gap: 3rem;
@@ -60,7 +59,5 @@
     padding-bottom: 2rem;
   }
   .legal_toc { position: static; }
-}
-@media screen and (max-width: 479px) {
   .legal_clause.is-sub { padding-left: 1.5rem; }
 }
