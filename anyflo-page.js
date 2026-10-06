@@ -348,6 +348,40 @@
     })();
 
     /* ------------------------------------------------------------------ *
+     * 4b. RELIABLE CARDS STACK on mobile <=479px (Figma 774:3787)
+     *     Header and cards are sticky (anyflo-page.css); each next card slides
+     *     over and sticks 12px below the previous one. While it slides over,
+     *     the outgoing card scales 1 → 0.92 and darkens 0 → 10%.
+     * ------------------------------------------------------------------ */
+    mm.add('(max-width: 479px) and ' + A.bp.motion, function () {
+      if (A.off('stack')) return;
+      var cards = gsap.utils.toArray('.home-reliable_card');
+      if (cards.length < 2) return;
+
+      // sticky top of a card in px (set in CSS per nth-child)
+      function stickTop(el) { return parseFloat(getComputedStyle(el).top) || 0; }
+
+      cards.slice(0, -1).forEach(function (card, i) {
+        var next = cards[i + 1];
+        gsap.fromTo(card, { scale: 1, '--stack-dim': 0 }, {
+          scale: 0.92,
+          '--stack-dim': 0.1,
+          transformOrigin: '50% 0%',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: next,
+            // from the moment the next card touches the bottom of this one
+            // until it sticks in its own place
+            start: function () { return 'top ' + (stickTop(card) + card.offsetHeight) + 'px'; },
+            end: function () { return 'top ' + stickTop(next) + 'px'; },
+            scrub: true,
+            invalidateOnRefresh: true
+          }
+        });
+      });
+    });
+
+    /* ------------------------------------------------------------------ *
      * 5. FAQ — accordion. Works with or without answers:
      *    an answer is the .home-faq_answer element right after the item.
      * ------------------------------------------------------------------ */

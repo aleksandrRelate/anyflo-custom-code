@@ -171,6 +171,34 @@
   }
 }
 
+/* ---- Reliable cards stack on mobile (<=479px, Figma 774:3787): sticky header,
+        each card sticks 12px below the previous; scale + dim come from anyflo-page.js ---- */
+@media screen and (max-width: 479px) {
+  .home-reliable_header {
+    position: sticky;
+    top: 4.5rem;
+  }
+  .home-reliable_card {
+    position: sticky;
+    top: 14.5rem;
+    box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.1);
+  }
+  .home-reliable_card:nth-child(2) { top: 15.25rem; }
+  .home-reliable_card:nth-child(3) { top: 16rem; }
+  .home-reliable_card:nth-child(4) { top: 16.75rem; }
+  .home-reliable_card:nth-child(5) { top: 17.5rem; }
+  .home-reliable_card:nth-child(6) { top: 18.25rem; }
+  .home-reliable_card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background-color: #000;
+    opacity: var(--stack-dim, 0);
+    pointer-events: none;
+  }
+}
+
 /* ---- FAQ accordion: answers are open in Designer (custom code isn't loaded there),
         closed on the live site; anyflo-page.js opens the first one ---- */
 .home-faq_icon {
