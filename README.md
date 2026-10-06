@@ -51,6 +51,7 @@
 | `data-faq-item` | каждый `.home-faq_item` | пункт аккордеона |
 | `.home-faq_answer` | блок сразу после `.home-faq_item` | ответ (опционально) |
 | `[data-leader-modal]` + `[data-leader-close]` | попапы в секции Leadership | i-я ссылка `.home-leadership_link` открывает i-й попап |
+| `data-footer-enter` | `.footer` (страница Terms of Service) | белая карточка футера держит весь контент страницы: при входе растягивается на всю ширину, как `.home-card_wrapper`, в конце сжимается обратно |
 | `data-navbar-theme="dark"` | любая тёмная секция | тёмная тема навбара (над PoC/API навбар темнеет вместе с фоном страницы — класс `is-page-dark` из anyflo-page.js) |
 
 ## Отладка

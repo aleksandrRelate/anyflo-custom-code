@@ -112,13 +112,17 @@
       };
       setPad();
 
-      var state = { p: 0 };
+      // [data-footer-enter] (legal page): the card also holds the page content, so it
+      // starts as a card and goes full-bleed while scrolling in, like .home-card_wrapper
+      var hasEnter = card.hasAttribute('data-footer-enter');
+      var state = { p: 0, e: hasEnter ? 1 : 0 }; // p: shrink at the end, e: card state at the start
       function render() {
         var p = state.p;
+        var s = Math.max(p, state.e);
         var r = reveal() * p;
         card.style.clipPath =
-          'inset(0px calc(' + side + ' * ' + p + ') ' + r + 'px calc(' + side + ' * ' + p + ') ' +
-          'round calc(' + radius + ' * ' + p + '))';
+          'inset(0px calc(' + side + ' * ' + s + ') ' + r + 'px calc(' + side + ' * ' + s + ') ' +
+          'round calc(' + radius + ' * ' + s + '))';
       }
 
       var tween = gsap.to(state, {
@@ -127,11 +131,30 @@
         onUpdate: render,
         scrollTrigger: {
           trigger: card,
-          start: 'top 50%',            // card top reaches the middle of the viewport
+          // card top reaches the middle of the viewport; a tall card (legal page)
+          // waits until its bottom is ~1.2 screens away, so the content stays full-bleed
+          start: hasEnter ? function () {
+            var top = card.getBoundingClientRect().top + window.scrollY;
+            return Math.max(top - window.innerHeight * 0.5,
+              top + card.offsetHeight - window.innerHeight * 2.2);
+          } : 'top 50%',
           end: 'bottom bottom',
           scrub: 0.6,
           invalidateOnRefresh: true,
           onRefresh: function () { setPad(); render(); }
+        }
+      });
+
+      var enter = hasEnter && gsap.to(state, {
+        e: 0,
+        ease: 'none',
+        onUpdate: render,
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',            // same range as .home-card_wrapper in anyflo-page.js
+          end: 'top top',
+          scrub: true,
+          invalidateOnRefresh: true
         }
       });
       render();
@@ -139,6 +162,7 @@
       return function () {
         tween.scrollTrigger.kill();
         tween.kill();
+        if (enter) { enter.scrollTrigger.kill(); enter.kill(); }
         card.style.clipPath = '';
         card.style.paddingBottom = '';
       };

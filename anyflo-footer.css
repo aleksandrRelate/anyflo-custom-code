@@ -10,6 +10,7 @@
   position: relative;
   z-index: 1;
   overflow: hidden;
+  overflow: clip; /* clip, not hidden: keeps position: sticky working inside (legal contents) */
   background: transparent;
 }
 .anyflo-footer-background {
@@ -52,6 +53,7 @@
 .anyflo-footer-stage .footer_component {
   position: relative;
   z-index: 1;
+  overflow: clip; /* Webflow sets hidden, which would break position: sticky inside */
 }
 .footer_component > .footer {
   will-change: clip-path;
