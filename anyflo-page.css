@@ -73,6 +73,19 @@
 .section_home-leadership.is-dark :is(.home-leadership_divider, .home-leadership_separator) {
   background-color: rgba(255, 255, 255, 0.2);
 }
+/* Section dividers under PoC / API follow the page theme (Figma 793:4389):
+   light page → black 5% like the other section dividers; dark page → grey-900 under PoC,
+   white 16% under API. .is-bg-themed is set by anyflo-page.js while it drives the bg */
+.is-bg-themed :is(.home-poc_layout, .home-api_layout) {
+  border-bottom-color: rgba(0, 0, 0, 0.05);
+  transition: border-color 0.5s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.section_home-poc.is-dark .home-poc_layout {
+  border-bottom-color: var(--grey--grey-900);
+}
+.section_home-api.is-dark .home-api_layout {
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
 
 /* ---- Platform tabs: inactive look; .is-active restores the Webflow base ---- */
 .home-platform_tab {

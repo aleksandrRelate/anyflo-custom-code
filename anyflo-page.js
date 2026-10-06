@@ -543,6 +543,7 @@
 
       var transparent = dark.concat(leadership ? [leadership] : []);
       transparent.forEach(function (el) { el.style.backgroundColor = 'transparent'; });
+      wrapper.classList.add('is-bg-themed'); // section dividers follow the theme (anyflo-page.css)
 
       // Timed (not scrubbed): when a boundary section reaches the middle of the viewport
       // the colors switch over DURATION; scrolling back past it switches them back.
@@ -596,6 +597,7 @@
         if (faqBg) faqBg.style.backgroundColor = '';
         transparent.forEach(function (el) { el.style.backgroundColor = ''; });
         setDark(false);
+        wrapper.classList.remove('is-bg-themed');
         wrapper.style.backgroundColor = '';
       };
     });
