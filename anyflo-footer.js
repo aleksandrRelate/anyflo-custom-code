@@ -12,6 +12,23 @@
   A.ready(function () {
     var footer = document.querySelector('.footer_component');
     if (!footer || A.off('footer')) return;
+
+    /* The form's submit is an <input>, which can't hold the arrow icon — swap it for a
+       <button> with the same SVG as the other buttons (Figma 793:4763) */
+    footer.querySelectorAll('input[type="submit"].button').forEach(function (input) {
+      var button = document.createElement('button');
+      button.type = 'submit';
+      button.className = input.className;
+      if (input.dataset.wait) button.dataset.wait = input.dataset.wait;
+      var label = document.createElement('div');
+      label.textContent = input.value.replace(/\s*→\s*$/, '');
+      button.appendChild(label);
+      button.insertAdjacentHTML('beforeend',
+        '<svg class="button_icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 14 14" fill="none">' +
+        '<path d="M2.92188 7H11.0885" stroke="currentColor" stroke-width="1.28333" stroke-linecap="round" stroke-linejoin="round"/>' +
+        '<path d="M7.57812 3.5L11.0781 7L7.57812 10.5" stroke="currentColor" stroke-width="1.28333" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+      input.replaceWith(button);
+    });
     // the white card that shrinks — .footer inside the component (FAQ sits above it)
     var card = footer.querySelector(':scope > .footer') || footer;
     if (!window.gsap || !window.ScrollTrigger) return;

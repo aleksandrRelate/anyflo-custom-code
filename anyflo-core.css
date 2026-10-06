@@ -26,3 +26,13 @@ html.anyflo-loading .home-hero_background {
 @media screen and (max-width: 479px) {
   .anyflo-button-mask { width: 100%; }
 }
+
+/* button arrow (Figma 793:4763): cream on dark buttons, the text color on light ones */
+.button_icon {
+  color: var(--base-colors--cream-100);
+  transition: color 0.5s cubic-bezier(0.45, 0, 0.55, 1);
+}
+.button:is(.is-cream, .is-secondary, .is-light) .button_icon,
+.navbar_component:is(.is-dark, .is-page-dark) .button_icon {
+  color: inherit;
+}
