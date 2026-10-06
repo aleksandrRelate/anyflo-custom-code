@@ -120,6 +120,31 @@
     });
 
     /* ------------------------------------------------------------------ *
+     * 2b. HERO PIN — the hero stays in place and fades out while the white
+     *     card (.home-card_wrapper, z-index 1) slides up over it.
+     *     pinSpacing: false, so the card keeps its place in the flow.
+     * ------------------------------------------------------------------ */
+    mm.add(A.bp.motion, function () {
+      if (A.off('heroPin')) return;
+      var hero = document.querySelector('.section_home-hero');
+      if (!hero) return;
+      var tween = gsap.to(hero, {
+        autoAlpha: 0,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          pin: true,
+          pinSpacing: false,
+          scrub: true,
+          invalidateOnRefresh: true
+        }
+      });
+      return function () { tween.scrollTrigger && tween.scrollTrigger.kill(); tween.kill(); gsap.set(hero, { clearProps: 'opacity,visibility' }); };
+    });
+
+    /* ------------------------------------------------------------------ *
      * 3. SECTION REVEALS — headers by words, cards/blocks staggered
      * ------------------------------------------------------------------ */
     var sections = [
