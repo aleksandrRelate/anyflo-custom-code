@@ -127,7 +127,7 @@
       { el: '.section_home-use-cases', text: '.heading-style-h2', items: '.home-use-cases_card' },
       { el: '.section_home-reasons', text: '.heading-style-h2', items: '.home-reasons_card' },
       { el: '.section_home-reliable', text: '.heading-style-h2', items: '.home-reliable_card' },
-      { el: '.section_home-poc', text: '.heading-style-h2', items: '.home-poc_image, .home-poc_step' },
+      { el: '.section_home-poc', text: '.heading-style-h2', items: '.home-poc_image, .home-poc_image-mobile, .home-poc_step' },
       { el: '.section_home-api', text: '.heading-style-h3', items: '.home-api_paragraph, .home-api_code-window', buttons: '.button' },
       { el: '.section_home-leadership', text: '.heading-style-h2', items: '.home-leadership_item, .home-leadership_separator' },
       { el: '.section_home-faq', text: '.heading-style-h3', items: '.home-faq_card' },
