@@ -102,7 +102,9 @@
     }, function (ctx) {
       var desktop = ctx.conditions.desktop;
       var side = desktop ? '5.625%' : '1rem';                 // card side margin (90px / 1600 in Figma)
-      var reveal = function () { return rem(desktop ? 11.8 : 6); }; // gradient strip under the card (~189px)
+      // gradient strip under the card: on desktop it equals the side margin, so the
+      // stopped card has the same frame on every screen; tablet/mobile keep 6rem
+      var reveal = function () { return desktop ? card.offsetWidth * 0.05625 : rem(6); };
       var radius = desktop ? '2rem' : '1.5rem';
 
       // extra white space at the bottom of the footer — it gets clipped away to reveal the gradient
