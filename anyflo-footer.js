@@ -51,10 +51,10 @@
       document.querySelectorAll('.home-card_wrapper'),
       function (el) { return !!el.querySelector('.legal_component'); }
     );
-    // A legal card is already inset by Webflow before this script runs. Applying
-    // the generic entry inset once more makes it grow on the first scroll. Keep
-    // only the end-of-page shrink for legal pages.
-    var hasEnter = !legalCard && footerCard.hasAttribute('data-footer-enter');
+    // Legal content must start with its card margins. Keep that inset static;
+    // the generic enter tween would otherwise remove it on the first scroll.
+    var hasEnter = footerCard.hasAttribute('data-footer-enter');
+    var keepLegalInset = !!legalCard;
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -162,7 +162,8 @@
       setPad();
 
       // Legal pages animate their content card and footer as one surface.
-      var state = { p: 0, e: hasEnter ? 1 : 0 }; // p: shrink at the end, e: card state at the start
+      var state = { p: 0, e: (hasEnter || keepLegalInset) ? 1 : 0 };
+      // p: shrink at the end, e: initial card inset
       function render() {
         var p = state.p;
         var s = Math.max(p, state.e);
@@ -192,7 +193,7 @@
         }
       });
 
-      var enter = hasEnter && gsap.to(state, {
+      var enter = hasEnter && !keepLegalInset && gsap.to(state, {
         e: 0,
         ease: 'none',
         onUpdate: render,
