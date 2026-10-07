@@ -51,7 +51,10 @@
       document.querySelectorAll('.home-card_wrapper'),
       function (el) { return !!el.querySelector('.legal_component'); }
     );
-    var hasEnter = !!legalCard || footerCard.hasAttribute('data-footer-enter');
+    // A legal card is already inset by Webflow before this script runs. Applying
+    // the generic entry inset once more makes it grow on the first scroll. Keep
+    // only the end-of-page shrink for legal pages.
+    var hasEnter = !legalCard && footerCard.hasAttribute('data-footer-enter');
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
