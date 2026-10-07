@@ -1,0 +1,62 @@
+/* Native Webflow Use cases styles — Figma 868:11509 / 793:5897. */
+.use-cases_section { background-color: #eae9e5; padding-top: 96px; padding-bottom: 96px; padding-left: 40px; padding-right: 40px; overflow-x: clip; }
+.use-cases_component { max-width: 1016px; margin-left: auto; margin-right: auto; }
+.use-cases_header { max-width: 599px; margin-left: auto; margin-right: auto; margin-bottom: 72px; text-align: center; }
+.use-cases_label { margin-top: 0px; margin-bottom: 16px; font-family: Datatype, sans-serif; font-size: 16px; font-weight: 500; line-height: 18px; letter-spacing: .48px; text-transform: uppercase; color: rgba(0,0,0,.6); }
+.use-cases_heading { margin-top: 0px; margin-bottom: 0px; font-family: Outfit, sans-serif; font-size: 64px; font-weight: 500; line-height: 56px; letter-spacing: -1.92px; color: #000; }
+.use-cases_swiper { position: relative; width: 100%; }
+.use-cases_cards { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 340px 325px; column-gap: 16px; row-gap: 16px; }
+.use-cases_slide { min-width: 0px; height: 100%; grid-column-start: span 2; }
+.use-cases_slide.is-wide { grid-column-start: span 3; }
+.use-cases_card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; overflow: hidden; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; background-color: #f6f5f4; padding-top: 24px; padding-right: 20px; padding-bottom: 32px; padding-left: 20px; }
+.use-cases_card.is-lower { padding-right: 24px; padding-bottom: 24px; padding-left: 24px; }
+.use-cases_copy { position: relative; z-index: 1; display: flex; flex-direction: column; row-gap: 16px; }
+.use-cases_title { margin-top: 0px; margin-bottom: 0px; font-family: Outfit, sans-serif; font-size: 26px; font-weight: 500; line-height: 30px; letter-spacing: -.48px; color: #000; }
+.use-cases_description { margin-top: 0px; margin-bottom: 0px; font-family: Inter, sans-serif; font-size: 17px; font-weight: 400; line-height: 24px; letter-spacing: -.2px; color: #000; }
+.use-cases_description.is-muted { color: rgba(0,0,0,.6); }
+.use-cases_art { position: absolute; width: 1186px; height: 629.706px; transform: scaleX(-1); pointer-events: none; }
+.use-cases_art.is-retail { width: 1167px; height: 619.5px; left: -74px; top: -92px; }
+.use-cases_art.is-fintech { left: -503px; top: -92px; }
+.use-cases_art.is-payroll { left: -93px; top: -448px; }
+.use-cases_art.is-marketplaces { left: -715px; top: -448px; }
+.use-cases_art-image { position: absolute; max-width: none; left: -45.779px; top: -52.39px; }
+.use-cases_art-image.is-retail { left: -52.165px; top: -52.413px; }
+.use-cases_art-image.is-mobile { display: none; }
+.use-cases_pagination { display: none; }
+.use-cases_segment { position: relative; display: block; width: 24px; height: 2px; flex-grow: 0; flex-shrink: 0; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-left-radius: 1px; border-bottom-right-radius: 1px; background-color: rgba(111,110,107,.2); padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; cursor: pointer; }
+.use-cases_progress { width: 100%; height: 2px; background-color: #000; transform-origin: left center; transform: scaleX(0); }
+.use-cases_segment.is-active { flex-grow: 1; }
+@media screen and (max-width: 991px) {
+  .use-cases_section { padding-top: 64px; padding-bottom: 64px; padding-left: 24px; padding-right: 24px; }
+  .use-cases_heading { font-size: 48px; line-height: 48px; letter-spacing: -1.44px; }
+  .use-cases_header { margin-bottom: 48px; }
+}
+@media screen and (max-width: 767px) {
+  .use-cases_section { padding-left: 16px; padding-right: 16px; }
+  .use-cases_heading { font-size: 40px; line-height: 42px; letter-spacing: -1.2px; }
+}
+@media screen and (max-width: 479px) {
+  .use-cases_section { background-color: #fff; padding-top: 40px; padding-bottom: 40px; padding-left: 16px; padding-right: 16px; }
+  .use-cases_header { margin-bottom: 40px; }
+  .use-cases_heading { font-size: 36px; line-height: 37.8px; letter-spacing: -1.92px; }
+  .use-cases_swiper { height: 400px; }
+  .use-cases_cards { display: flex; column-gap: 0px; row-gap: 0px; height: 400px; }
+  .use-cases_slide { width: 100%; height: 400px; flex-shrink: 0; grid-column-start: auto; }
+  .use-cases_slide.is-wide { grid-column-start: auto; }
+  .use-cases_card { padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; }
+  .use-cases_art.is-retail { left: -130px; top: -66.88px; }
+  .use-cases_art.is-fintech { left: -471px; top: -69.35px; }
+  .use-cases_art.is-payroll { left: -342px; top: -392.58px; }
+  .use-cases_art.is-marketplaces { left: -746.61px; top: -386.44px; }
+  .use-cases_art-image.is-desktop { display: none; }
+  .use-cases_art-image.is-mobile { display: block; }
+  .use-cases_pagination { display: flex; width: 220px; column-gap: 8px; margin-left: auto; margin-right: auto; margin-top: 40px; }
+}
+
+/* Figma exports preserve the grain texture exactly, including its clipping. */
+.use-cases_art { width: 100%; height: 100%; left: 0px; top: 0px; transform: none; }
+.use-cases_art.is-retail, .use-cases_art.is-fintech, .use-cases_art.is-payroll, .use-cases_art.is-marketplaces { width: 100%; height: 100%; left: 0px; top: 0px; }
+.use-cases_art-image, .use-cases_art-image.is-retail { width: 100%; height: auto; left: 0px; top: 0px; object-fit: contain; }
+@media screen and (max-width: 479px) {
+ .swiper-slide-active .use-cases_card { box-shadow: 0px 12px 16px rgba(0,0,0,.08); }
+}
