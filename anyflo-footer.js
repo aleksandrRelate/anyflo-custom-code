@@ -43,6 +43,69 @@
         }
       }
     });
+
+    // Let Webflow submit and hide the real form. The success background is a
+    // decorative copy of its layout, never a second form or submitted data.
+    footer.querySelectorAll('.footer_form-block').forEach(function (block) {
+      var form = block.querySelector('form');
+      var success = block.querySelector('.w-form-done');
+      if (!form || !success || success.classList.contains('anyflo-form-success')) return;
+
+      var backdrop = document.createElement('div');
+      backdrop.className = form.className + ' anyflo-form-success-backdrop';
+      backdrop.setAttribute('aria-hidden', 'true');
+      backdrop.setAttribute('inert', '');
+      Array.prototype.forEach.call(form.children, function (child) {
+        if (child.matches('.form_row, .form_field, .form_fieldset, .form_buttons')) {
+          backdrop.appendChild(child.cloneNode(true));
+        }
+      });
+      backdrop.querySelectorAll('input, textarea, select, button, a').forEach(function (el) {
+        var shape = document.createElement('div');
+        shape.className = el.className;
+        if (el.matches('[type="hidden"]')) { el.remove(); return; }
+        if (el.matches('[type="checkbox"]')) {
+          shape.classList.add('anyflo-form-success-checkbox');
+        } else if (el.matches('button, a')) {
+          shape.innerHTML = el.innerHTML;
+        } else if (el.matches('[type="submit"]')) {
+          shape.textContent = el.value.replace(/\s*→\s*$/, '');
+        } else if (el.matches('textarea')) {
+          shape.textContent = el.placeholder;
+        }
+        el.replaceWith(shape);
+      });
+      backdrop.querySelectorAll('*').forEach(function (el) {
+        ['id', 'name', 'for', 'data-name', 'data-wait', 'tabindex'].forEach(function (attr) {
+          el.removeAttribute(attr);
+        });
+      });
+
+      var card = document.createElement('div');
+      card.className = 'anyflo-form-success-card';
+      card.innerHTML = '<div class="anyflo-form-success-copy">' +
+        '<h3 class="anyflo-form-success-title">Thank you!<br>We’ll be in touch</h3>' +
+        '<p class="anyflo-form-success-text">We’ve received your request. Our team will review the details and get back to you shortly.</p>' +
+        '</div><a class="button is-small is-light anyflo-form-success-link" href="https://docs.anyflo.io/" target="_blank" rel="noopener">Explore API docs</a>';
+      success.classList.add('anyflo-form-success');
+      success.replaceChildren(backdrop, card);
+
+      function measureForm() {
+        if (form.getBoundingClientRect().height > 0) {
+          block.style.setProperty('--anyflo-form-height', form.getBoundingClientRect().height + 'px');
+        }
+      }
+      measureForm();
+      if (window.ResizeObserver) new ResizeObserver(measureForm).observe(form);
+      // Watch the native success state; a submit event alone may still fail.
+      if (window.MutationObserver) {
+        new MutationObserver(function () {
+          var shown = window.getComputedStyle(success).display !== 'none';
+          block.classList.toggle('anyflo-form-is-success', shown);
+          if (shown && window.ScrollTrigger) ScrollTrigger.refresh();
+        }).observe(success, { attributes: true, attributeFilter: ['style', 'hidden'] });
+      }
+    });
     // The footer card shrinks on regular pages. Legal pages already have one
     // visible card around their content (.home-card_wrapper), so the footer must
     // join that card before the animation is created.
