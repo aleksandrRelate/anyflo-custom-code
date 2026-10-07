@@ -53,7 +53,14 @@
       playback();
     }
     segments.forEach(function (button, i) {
-      button.addEventListener('click', function () {
+      button.setAttribute('role', 'button');
+      button.setAttribute('tabindex', '0');
+      button.addEventListener('keydown', function (event) {
+        if (event.key === ' ') { event.preventDefault(); button.click(); }
+      });
+      button.addEventListener('click', function (event) {
+        event.preventDefault();
+        if (event.detail > 0) button.blur();
         if (!swiper) return;
         swiper.slideTo(i);
         pagination(i, reduced.matches ? 1 : 0);
