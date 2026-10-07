@@ -43,10 +43,15 @@
         }
       }
     });
-    // The footer card shrinks on regular pages. On legal pages, data-footer-enter
-    // marks the whole legal card, so wrap main + footer and animate that as one.
+    // The footer card shrinks on regular pages. Legal pages already have one
+    // visible card around their content (.home-card_wrapper), so the footer must
+    // join that card before the animation is created.
     var footerCard = footer.querySelector(':scope > .footer') || footer;
-    var hasEnter = footerCard.hasAttribute('data-footer-enter');
+    var legalCard = Array.prototype.find.call(
+      document.querySelectorAll('.home-card_wrapper'),
+      function (el) { return !!el.querySelector('.legal_component'); }
+    );
+    var hasEnter = !!legalCard || footerCard.hasAttribute('data-footer-enter');
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -57,8 +62,7 @@
     host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
-    var main = hasEnter && host.querySelector('.main-wrapper');
-    var card = hasEnter ? stage : footerCard;
+    var card = legalCard || footerCard;
     var bg = footer.querySelector('.anyflo-footer-background') || document.createElement('div');
     bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
@@ -75,9 +79,9 @@
     video.setAttribute('aria-hidden', 'true');
     bg.appendChild(video);
     host.appendChild(bg);
-    if (main) {
-      main.before(stage);
-      stage.appendChild(main);
+    if (legalCard) {
+      stage = legalCard;
+      stage.classList.add('anyflo-legal-shared-card');
     } else {
       footer.before(stage);
     }
@@ -154,8 +158,7 @@
       };
       setPad();
 
-      // [data-footer-enter] legal pages animate the shared stage containing both
-      // main content and footer, so the background has one continuous card edge.
+      // Legal pages animate their content card and footer as one surface.
       var state = { p: 0, e: hasEnter ? 1 : 0 }; // p: shrink at the end, e: card state at the start
       function render() {
         var p = state.p;
