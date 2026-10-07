@@ -43,8 +43,10 @@
         }
       }
     });
-    // the white card that shrinks — .footer inside the component (FAQ sits above it)
-    var card = footer.querySelector(':scope > .footer') || footer;
+    // The footer card shrinks on regular pages. On legal pages, data-footer-enter
+    // marks the whole legal card, so wrap main + footer and animate that as one.
+    var footerCard = footer.querySelector(':scope > .footer') || footer;
+    var hasEnter = footerCard.hasAttribute('data-footer-enter');
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -55,6 +57,8 @@
     host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
+    var main = hasEnter && host.querySelector('.main-wrapper');
+    var card = hasEnter ? stage : footerCard;
     var bg = footer.querySelector('.anyflo-footer-background') || document.createElement('div');
     bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
@@ -71,7 +75,12 @@
     video.setAttribute('aria-hidden', 'true');
     bg.appendChild(video);
     host.appendChild(bg);
-    footer.before(stage);
+    if (main) {
+      main.before(stage);
+      stage.appendChild(main);
+    } else {
+      footer.before(stage);
+    }
     stage.appendChild(footer);
     if (faq) faq.classList.add('anyflo-shared-background');
 
@@ -145,9 +154,8 @@
       };
       setPad();
 
-      // [data-footer-enter] (legal page): the card also holds the page content, so it
-      // starts as a card and goes full-bleed while scrolling in, like .home-card_wrapper
-      var hasEnter = card.hasAttribute('data-footer-enter');
+      // [data-footer-enter] legal pages animate the shared stage containing both
+      // main content and footer, so the background has one continuous card edge.
       var state = { p: 0, e: hasEnter ? 1 : 0 }; // p: shrink at the end, e: card state at the start
       function render() {
         var p = state.p;
