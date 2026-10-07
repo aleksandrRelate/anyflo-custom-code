@@ -642,7 +642,8 @@
     mm.add(A.bp.motion, function () {
       if (A.off('card')) return;
       var card = document.querySelector('.home-card_wrapper');
-      if (!card) return;
+      // Legal content and its footer share one surface, owned by anyflo-footer.js.
+      if (!card || card.querySelector('.legal_component')) return;
       var MAX = 1440; // .home-card_wrapper max-width in Webflow
       var radius = parseFloat(getComputedStyle(card).borderTopLeftRadius) || 0;
       var side = 0, enter = 0, leave = 0;

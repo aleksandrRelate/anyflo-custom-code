@@ -58,6 +58,21 @@
 .footer_component > .footer {
   will-change: clip-path;
 }
+/* Legal text and footer form a single white surface with one clip-path. */
+.anyflo-legal-shared-card {
+  overflow: clip;
+  will-change: clip-path;
+}
+.anyflo-legal-shared-card .footer_component {
+  position: relative;
+  z-index: 1;
+  overflow: clip;
+}
+.anyflo-legal-shared-card .footer_component > .footer {
+  border-radius: 0;
+  background: transparent;
+  will-change: auto;
+}
 /* Tablet/mobile: anyflo-footer.js clips 1rem off each side of the card — the same as
    .padding-global there — so the content would touch the card edge. Keep 1rem inside. */
 @media (max-width: 991px) and (prefers-reduced-motion: no-preference) {

@@ -106,9 +106,11 @@
         }).observe(success, { attributes: true, attributeFilter: ['style', 'hidden'] });
       }
     });
-    // Use the same footer surface on every page. The content card has its own
-    // animation in anyflo-page.js and must never become the footer's target.
     var footerCard = footer.querySelector(':scope > .footer') || footer;
+    var legalCard = Array.prototype.find.call(
+      document.querySelectorAll('.home-card_wrapper'),
+      function (el) { return !!el.querySelector('.legal_component'); }
+    );
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -119,7 +121,7 @@
     host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
-    var card = footerCard;
+    var card = legalCard || footerCard;
     var bg = footer.querySelector('.anyflo-footer-background') || document.createElement('div');
     bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
@@ -136,7 +138,12 @@
     video.setAttribute('aria-hidden', 'true');
     bg.appendChild(video);
     host.appendChild(bg);
-    footer.before(stage);
+    if (legalCard) {
+      stage = legalCard;
+      stage.classList.add('anyflo-legal-shared-card');
+    } else {
+      footer.before(stage);
+    }
     stage.appendChild(footer);
     if (faq) faq.classList.add('anyflo-shared-background');
 
@@ -203,29 +210,61 @@
       var reveal = function () { return desktop ? card.offsetWidth * 0.05625 : rem(6); };
       var radius = desktop ? '2rem' : '1.5rem';
 
-      // extra white space at the bottom of the footer — it gets clipped away to reveal the gradient
+      // Only the shared surface is clipped. The footer is a scroll landmark,
+      // with exactly the same exit range as Home, never a separate animated card.
+      var entrySide = 0, entryRadius = 0;
+      var state = { p: 0, e: legalCard ? 1 : 0 };
+      function measureEntry() {
+        if (!legalCard) return;
+        ['maxWidth', 'marginLeft', 'marginRight', 'borderRadius'].forEach(function (key) {
+          card.style[key] = '';
+        });
+        var cs = getComputedStyle(card);
+        entrySide = Math.max(parseFloat(cs.marginLeft) || 0,
+          (window.innerWidth - Math.min(card.offsetWidth, 1440)) / 2);
+        entryRadius = parseFloat(cs.borderTopLeftRadius) || 0;
+        card.style.maxWidth = 'none';
+        card.style.marginLeft = card.style.marginRight = '0px';
+        card.style.borderRadius = '0px';
+      }
+      measureEntry();
+
+      // The bottom reveal occupies layout space, just as it does on Home.
       var setPad = function () {
         card.style.paddingBottom = reveal() + 'px';
         positionBackground();
       };
       setPad();
 
-      var state = { p: 0 };
       function render() {
         var p = state.p;
-        var s = p;
         var r = reveal() * p;
-        card.style.clipPath =
-          'inset(0px calc(' + side + ' * ' + s + ') ' + r + 'px calc(' + side + ' * ' + s + ') ' +
-          'round calc(' + radius + ' * ' + s + '))';
+        var inset = legalCard
+          ? 'max(' + (entrySide * state.e) + 'px, calc(' + side + ' * ' + p + '))'
+          : 'calc(' + side + ' * ' + p + ')';
+        var corners = legalCard
+          ? 'max(' + (entryRadius * state.e) + 'px, calc(' + radius + ' * ' + p + '))'
+          : 'calc(' + radius + ' * ' + p + ')';
+        card.style.clipPath = 'inset(0px ' + inset + ' ' + r + 'px ' + inset +
+          ' round ' + corners + ')';
       }
+
+      var enter = legalCard && ScrollTrigger.create({
+        trigger: card,
+        start: 'top 85%',
+        end: 'top top',
+        onUpdate: function (self) { state.e = 1 - self.progress; render(); },
+        onRefreshInit: measureEntry,
+        onRefresh: function (self) { state.e = 1 - self.progress; render(); }
+      });
 
       var tween = gsap.to(state, {
         p: 1,
         ease: 'none',
         onUpdate: render,
         scrollTrigger: {
-          trigger: card,
+          trigger: footerCard,
+          endTrigger: card,
           start: 'top 50%',
           end: 'bottom bottom',
           scrub: 0.6,
@@ -239,6 +278,12 @@
       return function () {
         tween.scrollTrigger.kill();
         tween.kill();
+        if (enter) enter.kill();
+        if (legalCard) {
+          ['maxWidth', 'marginLeft', 'marginRight', 'borderRadius'].forEach(function (key) {
+            card.style[key] = '';
+          });
+        }
         card.style.clipPath = '';
         card.style.paddingBottom = '';
       };
