@@ -181,7 +181,8 @@
       var root = document.querySelector('[data-platform-tabs]');
       if (!root || A.off('tabs')) return;
       var tabs = gsap.utils.toArray(root.querySelectorAll('[data-platform-tab]'));
-      var image = document.querySelector('.home-platform_image');
+      // one card image per tab (Figma 896:745: Send, Receive, Pay), same order as the tabs
+      var images = gsap.utils.toArray('.home-platform_content > .home-platform_visual .home-platform_image');
       if (!tabs.length) return;
 
       var DURATION = 6;
@@ -202,6 +203,10 @@
         copy.querySelectorAll('[style]').forEach(function (el) { el.removeAttribute('style'); });
         copy.classList.add('is-slide');
         copy.setAttribute('aria-hidden', 'true');
+        var i = tabs.indexOf(tab);
+        copy.querySelectorAll('.home-platform_image').forEach(function (img, j) {
+          if (images.length > 1 && j !== i) img.remove(); else img.classList.add('is-current');
+        });
         tab.insertBefore(copy, tab.firstChild);
       });
 
@@ -318,6 +323,8 @@
         });
         if (wasStarted && !fromSwipe) scrollToTab(index);
 
+        images.forEach(function (img, i) { img.classList.toggle('is-current', i === index || images.length === 1); });
+        var image = images[index] || images[0];
         if (image && !reduced) {
           gsap.fromTo(image,
             { autoAlpha: 0, y: 20, scale: 0.97 },

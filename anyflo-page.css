@@ -171,6 +171,17 @@
   color: var(--base-colors--black);
 }
 
+/* ---- Platform cards: one image per tab, anyflo-page.js marks the current one ---- */
+.home-platform_image:not(:first-child) {
+  display: none;
+}
+.home-platform_visual .home-platform_image.is-current {
+  display: block;
+}
+.home-platform_visual:has(.is-current) .home-platform_image:not(.is-current) {
+  display: none;
+}
+
 /* ---- Platform on mobile (<=479px, Figma 793:5799): swipeable slides + segmented pagination.
         anyflo-page.js adds .home-platform_visual.is-slide into each tab and .home-platform_dots ---- */
 .home-platform_visual.is-slide,
