@@ -58,21 +58,6 @@
 .footer_component > .footer {
   will-change: clip-path;
 }
-/* Legal pages use .home-card_wrapper as the one shared card. The footer moves
-   inside it at runtime, so remove its own card edge and let the parent animate. */
-.anyflo-legal-shared-card {
-  overflow: clip;
-  will-change: clip-path;
-}
-.anyflo-legal-shared-card .footer_component {
-  position: relative;
-  z-index: 1;
-  overflow: clip;
-}
-.anyflo-legal-shared-card .footer_component > .footer {
-  border-radius: 0;
-  background: transparent;
-}
 /* Tablet/mobile: anyflo-footer.js clips 1rem off each side of the card — the same as
    .padding-global there — so the content would touch the card edge. Keep 1rem inside. */
 @media (max-width: 991px) and (prefers-reduced-motion: no-preference) {

@@ -106,18 +106,9 @@
         }).observe(success, { attributes: true, attributeFilter: ['style', 'hidden'] });
       }
     });
-    // The footer card shrinks on regular pages. Legal pages already have one
-    // visible card around their content (.home-card_wrapper), so the footer must
-    // join that card before the animation is created.
+    // Use the same footer surface on every page. The content card has its own
+    // animation in anyflo-page.js and must never become the footer's target.
     var footerCard = footer.querySelector(':scope > .footer') || footer;
-    var legalCard = Array.prototype.find.call(
-      document.querySelectorAll('.home-card_wrapper'),
-      function (el) { return !!el.querySelector('.legal_component'); }
-    );
-    // Legal content must start with its card margins. Keep that inset static;
-    // the generic enter tween would otherwise remove it on the first scroll.
-    var hasEnter = footerCard.hasAttribute('data-footer-enter');
-    var keepLegalInset = !!legalCard;
     if (!window.gsap || !window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
 
@@ -128,7 +119,7 @@
     host.classList.add('anyflo-footer-host');
     var stage = document.createElement('div');
     stage.className = 'anyflo-footer-stage';
-    var card = legalCard || footerCard;
+    var card = footerCard;
     var bg = footer.querySelector('.anyflo-footer-background') || document.createElement('div');
     bg.className = 'anyflo-footer-background';
     bg.setAttribute('aria-hidden', 'true');
@@ -145,12 +136,7 @@
     video.setAttribute('aria-hidden', 'true');
     bg.appendChild(video);
     host.appendChild(bg);
-    if (legalCard) {
-      stage = legalCard;
-      stage.classList.add('anyflo-legal-shared-card');
-    } else {
-      footer.before(stage);
-    }
+    footer.before(stage);
     stage.appendChild(footer);
     if (faq) faq.classList.add('anyflo-shared-background');
 
@@ -224,12 +210,10 @@
       };
       setPad();
 
-      // Legal pages animate their content card and footer as one surface.
-      var state = { p: 0, e: (hasEnter || keepLegalInset) ? 1 : 0 };
-      // p: shrink at the end, e: initial card inset
+      var state = { p: 0 };
       function render() {
         var p = state.p;
-        var s = Math.max(p, state.e);
+        var s = p;
         var r = reveal() * p;
         card.style.clipPath =
           'inset(0px calc(' + side + ' * ' + s + ') ' + r + 'px calc(' + side + ' * ' + s + ') ' +
@@ -242,13 +226,7 @@
         onUpdate: render,
         scrollTrigger: {
           trigger: card,
-          // card top reaches the middle of the viewport; a tall card (legal page)
-          // waits until its bottom is ~1.2 screens away, so the content stays full-bleed
-          start: hasEnter ? function () {
-            var top = card.getBoundingClientRect().top + window.scrollY;
-            return Math.max(top - window.innerHeight * 0.5,
-              top + card.offsetHeight - window.innerHeight * 2.2);
-          } : 'top 50%',
+          start: 'top 50%',
           end: 'bottom bottom',
           scrub: 0.6,
           invalidateOnRefresh: true,
@@ -256,24 +234,11 @@
         }
       });
 
-      var enter = hasEnter && !keepLegalInset && gsap.to(state, {
-        e: 0,
-        ease: 'none',
-        onUpdate: render,
-        scrollTrigger: {
-          trigger: card,
-          start: 'top 85%',            // same range as .home-card_wrapper in anyflo-page.js
-          end: 'top top',
-          scrub: true,
-          invalidateOnRefresh: true
-        }
-      });
       render();
 
       return function () {
         tween.scrollTrigger.kill();
         tween.kill();
-        if (enter) { enter.scrollTrigger.kill(); enter.kill(); }
         card.style.clipPath = '';
         card.style.paddingBottom = '';
       };
