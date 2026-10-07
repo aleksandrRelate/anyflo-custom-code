@@ -52,10 +52,6 @@
 .section_home-api.is-dark .home-api_code-window {
   background-color: #0a0a0a;
   border-color: transparent;
-  background-image: linear-gradient(#0a0a0a, #0a0a0a),
-    linear-gradient(162deg, rgb(234 233 229 / 4%), transparent);
-  background-origin: padding-box, border-box;
-  background-clip: padding-box, border-box;
 }
 .section_home-api.is-dark .home-api_code-header {
   border-bottom-color: rgb(234 233 229 / 4%);
@@ -75,6 +71,58 @@
 .section_home-api.is-dark .code-keyword { color: #c8b8dd; }
 .section_home-api.is-dark .code-function { color: #e2b68e; }
 .section_home-api.is-dark .code-string { color: #adcea6; }
+
+/* Keep the gradient on the border only; painting a solid gradient over the
+   window background would bypass its color interpolation and flash. */
+.home-api_code-window::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  padding: 1px;
+  border-radius: inherit;
+  background: linear-gradient(162deg, rgb(234 233 229 / 4%), transparent);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  pointer-events: none;
+}
+.section_home-api.is-dark .home-api_code-window::before { opacity: 1; }
+
+/* One GSAP progress value drives the illustration and page background together.
+   Disable CSS transitions here so they don't trail each animation frame. */
+.is-bg-themed .section_home-api .home-api_code-window,
+.is-bg-themed .section_home-api .home-api_code-window * { transition: none; }
+.is-bg-themed .section_home-api .home-api_code-window {
+  --api-dark-weight: calc(var(--anyflo-api-dark, 0) * 100%);
+  background-color: color-mix(in srgb, #0a0a0a var(--api-dark-weight), #fff);
+  border-color: color-mix(in srgb, transparent var(--api-dark-weight), #dddbd7);
+}
+.is-bg-themed .section_home-api .home-api_code-window::before { opacity: var(--anyflo-api-dark, 0); }
+.is-bg-themed .section_home-api .home-api_code-header {
+  border-bottom-color: color-mix(in srgb, rgb(234 233 229 / 4%) var(--api-dark-weight), #dddbd7);
+}
+.is-bg-themed .section_home-api .home-api_code-dot {
+  background-color: color-mix(in srgb, #40403d var(--api-dark-weight), #dddbd7);
+}
+.is-bg-themed .section_home-api .home-api_code-body {
+  color: color-mix(in srgb, #dddbd7 var(--api-dark-weight), #000);
+}
+.is-bg-themed .section_home-api .home-api_code-label {
+  color: color-mix(in srgb, rgb(234 233 229 / 50%) var(--api-dark-weight), #93928d);
+}
+.is-bg-themed .section_home-api .code-comment {
+  color: color-mix(in srgb, rgb(234 233 229 / 40%) var(--api-dark-weight), #93928d);
+}
+.is-bg-themed .section_home-api .code-keyword {
+  color: color-mix(in srgb, #c8b8dd var(--api-dark-weight), #65537e);
+}
+.is-bg-themed .section_home-api .code-function {
+  color: color-mix(in srgb, #e2b68e var(--api-dark-weight), #925d28);
+}
+.is-bg-themed .section_home-api .code-string {
+  color: color-mix(in srgb, #adcea6 var(--api-dark-weight), #326a28);
+}
 
 .section_home-leadership.is-dark :is(h2, .heading-style-h6, .text-style-quote, .home-leadership_social-link) {
   color: var(--base-colors--white);

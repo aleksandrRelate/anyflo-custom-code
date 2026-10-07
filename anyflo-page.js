@@ -561,7 +561,7 @@
 
       function paint(pageColor) {
         setDark(pageColor === BLACK);
-        gsap.to(wrapper, { backgroundColor: pageColor, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
+        gsap.to(wrapper, { backgroundColor: pageColor, '--anyflo-api-dark': pageColor === BLACK ? 1 : 0, duration: DURATION, ease: 'power2.inOut', overwrite: 'auto' });
       }
 
       // [trigger, page color after crossing (down), before crossing (up)]; the white card (.home-card_wrapper) is never repainted
@@ -587,7 +587,7 @@
         var page = CREAM;
         triggers.forEach(function (t, i) { if (t.scroll() >= t.start) page = stops[i][1]; });
         setDark(page === BLACK);
-        gsap.set(wrapper, { backgroundColor: page });
+        gsap.set(wrapper, { backgroundColor: page, '--anyflo-api-dark': page === BLACK ? 1 : 0 });
       }
       sync();
 
@@ -599,6 +599,7 @@
         setDark(false);
         wrapper.classList.remove('is-bg-themed');
         wrapper.style.backgroundColor = '';
+        wrapper.style.removeProperty('--anyflo-api-dark');
       };
     });
 
