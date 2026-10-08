@@ -89,7 +89,9 @@
         yPercent: 0,
         duration: 0.6,
         stagger: 0.04,
-        force3D: true
+        force3D: true,
+        // the line mask clips descenders (g, y, p) once the words are in place
+        onComplete: function () { gsap.set(split.lines, { overflow: 'visible' }); }
       }, position || 0);
     }
 
