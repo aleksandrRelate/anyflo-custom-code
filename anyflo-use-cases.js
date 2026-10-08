@@ -21,7 +21,7 @@
     function playback() {
       if (!swiper) return;
       if (visible && !document.hidden && !reduced.matches && !component.contains(document.activeElement)) {
-        if (!swiper.autoplay.running) swiper.autoplay.start();
+        if (!swiper.autoplay.running) { swiper.params.autoplay.enabled = true; swiper.autoplay.start(); }
         else if (swiper.autoplay.paused) swiper.autoplay.resume();
       } else if (swiper.autoplay.running) swiper.autoplay.pause();
     }
@@ -41,12 +41,16 @@
         effect: 'cards', grabCursor: true, rewind: true,
         speed: reduced.matches ? 0 : 500,
         cardsEffect: { perSlideOffset: 8, perSlideRotate: 1, slideShadows: false },
-        autoplay: { delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
+        autoplay: { enabled: false, delay: 5000, disableOnInteraction: false, pauseOnMouseEnter: true },
         a11y: { enabled: true, containerMessage: 'Anyflo use cases' },
         keyboard: { enabled: true, onlyInViewport: true },
         on: {
           init: function (s) { pagination(s.realIndex, reduced.matches ? 1 : 0); },
           slideChange: function (s) { pagination(s.realIndex, reduced.matches ? 1 : 0); },
+          transitionEnd: playback,
+          autoplayResume: function (s) {
+            if (!visible || document.hidden || reduced.matches || component.contains(document.activeElement)) s.autoplay.pause();
+          },
           autoplayTimeLeft: function (s, time, remaining) { pagination(s.realIndex, 1 - remaining); }
         }
       });
@@ -67,12 +71,34 @@
         if (swiper.autoplay.running) { swiper.autoplay.stop(); playback(); }
       });
     });
-    if (window.IntersectionObserver) {
-      new IntersectionObserver(function (entries) {
-        visible = entries[0].isIntersecting;
-        playback();
-      }, { threshold: 0.2 }).observe(host);
-    } else visible = true;
+    // Match the Platform slider above: run between top 85% and bottom 15%.
+    function setVisible(next) {
+      visible = next;
+      playback();
+    }
+    if (window.ScrollTrigger) {
+      var visibilityTrigger = ScrollTrigger.create({
+        trigger: host,
+        start: 'top 85%',
+        end: 'bottom 15%',
+        onToggle: function (self) { setVisible(self.isActive); },
+        onRefresh: function (self) { setVisible(self.isActive); }
+      });
+      visible = visibilityTrigger.isActive;
+    } else {
+      var visibilityFrame = 0;
+      function checkVisibility() {
+        visibilityFrame = 0;
+        var rect = host.getBoundingClientRect();
+        setVisible(rect.top < window.innerHeight * 0.85 && rect.bottom > window.innerHeight * 0.15);
+      }
+      function queueVisibility() {
+        if (!visibilityFrame) visibilityFrame = requestAnimationFrame(checkVisibility);
+      }
+      window.addEventListener('scroll', queueVisibility, { passive: true });
+      window.addEventListener('resize', queueVisibility, { passive: true });
+      checkVisibility();
+    }
     phone.addEventListener('change', sync);
     reduced.addEventListener('change', sync);
     document.addEventListener('visibilitychange', playback);

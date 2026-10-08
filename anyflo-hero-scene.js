@@ -525,16 +525,25 @@ async function mount() {
   }
 
   // Square canvas covering the hero's shorter side, like the original fit()
+  // Figma 793:4390 (1600px frame): the sphere is ~1134px across, centred at (1340, 527);
+  // the sphere fills 0.634 of the canvas, so the canvas is 1.118 × hero width
+  const hero = host.closest(".section_home-hero") || host;
   function fit() {
     const r = host.getBoundingClientRect();
-    const m = Math.round(Math.min(r.width, r.height)) || 1;
+    const s = hero.getBoundingClientRect();
+    // mobile (<=479px): the sphere sits centred under the buttons, cut by the hero bottom
+    const phone = window.matchMedia("(max-width: 479px)").matches;
+    const m = Math.round(s.width * (phone ? 1.42 : 1.118)) || 1;
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     renderer.setPixelRatio(dpr);
     renderer.setSize(m, m, false);
     composer.setPixelRatio(dpr);
     composer.setSize(m, m);
+    canvas.style.position = "absolute";
     canvas.style.width = m + "px";
     canvas.style.height = m + "px";
+    canvas.style.left = Math.round(s.left - r.left + s.width * (phone ? 0.5 : 0.8375) - m / 2) + "px";
+    canvas.style.top = Math.round(s.top - r.top + (phone ? s.height + s.width * 0.08 : s.width * 0.329) - m / 2) + "px";
   }
 
   function step(dt) {

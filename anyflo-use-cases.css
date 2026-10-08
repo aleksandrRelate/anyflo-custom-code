@@ -1,63 +1,68 @@
 /* Native Webflow Use cases styles — Figma 868:11509 / 793:5897. */
-.use-cases_section { background-color: #eae9e5; padding-top: 96px; padding-bottom: 96px; padding-left: 40px; padding-right: 40px; overflow-x: clip; }
-.use-cases_component { max-width: 1016px; margin-left: auto; margin-right: auto; }
-.use-cases_header { max-width: 599px; margin-left: auto; margin-right: auto; margin-bottom: 72px; text-align: center; }
-.use-cases_label { margin-top: 0px; margin-bottom: 16px; font-family: Datatype, sans-serif; font-size: 16px; font-weight: 500; line-height: 18px; letter-spacing: .48px; text-transform: uppercase; color: rgba(0,0,0,.6); }
-.use-cases_heading { margin-top: 0px; margin-bottom: 0px; font-family: Outfit, sans-serif; font-size: 64px; font-weight: 500; line-height: 56px; letter-spacing: -1.92px; color: #000; }
+.use-cases_section { background-color: transparent; padding-top: 6rem; padding-bottom: 6rem; padding-left: 2.5rem; padding-right: 2.5rem; overflow-x: clip; }
+.use-cases_component { max-width: 63.5rem; margin-left: auto; margin-right: auto; }
+.use-cases_header { max-width: 37.4375rem; margin-left: auto; margin-right: auto; margin-bottom: 4.5rem; text-align: center; }
+.use-cases_label, .text-style-tagline.use-cases_label { margin-top: 0rem; margin-bottom: 1rem; font-family: Datatype, sans-serif; font-size: 1rem; font-weight: 500; line-height: 1.125rem; letter-spacing: 0.03rem; text-transform: uppercase; color: rgba(0,0,0,.6); }
+.use-cases_heading, .heading-style-h2.use-cases_heading { margin-top: 0rem; margin-bottom: 0rem; font-family: Outfit, sans-serif; font-size: 4rem; font-weight: 500; line-height: 3.5rem; letter-spacing: -0.12rem; color: #000; }
 .use-cases_swiper { position: relative; width: 100%; }
-.use-cases_cards { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 340px 325px; column-gap: 16px; row-gap: 16px; }
-.use-cases_slide { min-width: 0px; height: 100%; grid-column-start: span 2; }
+.use-cases_cards { display: grid; grid-template-columns: repeat(5, 1fr); grid-template-rows: 21.25rem 20.3125rem; column-gap: 1rem; row-gap: 1rem; }
+.use-cases_slide { min-width: 0rem; height: 100%; grid-column-start: span 2; }
 .use-cases_slide.is-wide { grid-column-start: span 3; }
-.use-cases_card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; overflow: hidden; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; background-color: #f6f5f4; padding-top: 24px; padding-right: 20px; padding-bottom: 32px; padding-left: 20px; }
-.use-cases_card.is-lower { padding-right: 24px; padding-bottom: 24px; padding-left: 24px; }
-.use-cases_copy { position: relative; z-index: 1; display: flex; flex-direction: column; row-gap: 16px; }
-.use-cases_title { margin-top: 0px; margin-bottom: 0px; font-family: Outfit, sans-serif; font-size: 26px; font-weight: 500; line-height: 30px; letter-spacing: -.48px; color: #000; }
-.use-cases_description { margin-top: 0px; margin-bottom: 0px; font-family: Inter, sans-serif; font-size: 17px; font-weight: 400; line-height: 24px; letter-spacing: -.2px; color: #000; }
+.use-cases_card { position: relative; display: flex; flex-direction: column; justify-content: flex-end; width: 100%; height: 100%; overflow: hidden; border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; background-color: #f6f5f4; padding-top: 1.5rem; padding-right: 1.25rem; padding-bottom: 2rem; padding-left: 1.25rem; }
+.use-cases_card.is-lower { padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; }
+.use-cases_copy { position: relative; z-index: 1; display: flex; flex-direction: column; row-gap: 1rem; }
+.use-cases_title, .heading-style-h6.use-cases_title { margin-top: 0rem; margin-bottom: 0rem; font-family: Outfit, sans-serif; font-size: 1.625rem; font-weight: 500; line-height: 1.875rem; letter-spacing: -0.03rem; color: #000; }
+.use-cases_description, .text-size-medium.use-cases_description { margin-top: 0rem; margin-bottom: 0rem; font-family: Inter, sans-serif; font-size: 1.0625rem; font-weight: 400; line-height: 1.5rem; letter-spacing: -0.0125rem; color: #000; }
 .use-cases_description.is-muted { color: rgba(0,0,0,.6); }
-.use-cases_art { position: absolute; width: 1186px; height: 629.706px; transform: scaleX(-1); pointer-events: none; }
-.use-cases_art.is-retail { width: 1167px; height: 619.5px; left: -74px; top: -92px; }
-.use-cases_art.is-fintech { left: -503px; top: -92px; }
-.use-cases_art.is-payroll { left: -93px; top: -448px; }
-.use-cases_art.is-marketplaces { left: -715px; top: -448px; }
-.use-cases_art-image { position: absolute; max-width: none; left: -45.779px; top: -52.39px; }
-.use-cases_art-image.is-retail { left: -52.165px; top: -52.413px; }
+.use-cases_art { position: absolute; width: 74.125rem; height: 39.356625rem; transform: scaleX(-1); pointer-events: none; }
+.use-cases_art.is-retail { width: 72.9375rem; height: 38.71875rem; left: -4.625rem; top: -5.75rem; }
+.use-cases_art.is-fintech { left: -31.4375rem; top: -5.75rem; }
+.use-cases_art.is-payroll { left: -5.8125rem; top: -28rem; }
+.use-cases_art.is-marketplaces { left: -44.6875rem; top: -28rem; }
+.use-cases_art-image { position: absolute; max-width: none; left: -2.8611875rem; top: -3.274375rem; }
+.use-cases_art-image.is-retail { left: -3.2603125rem; top: -3.2758125rem; }
 .use-cases_art-image.is-mobile { display: none; }
 .use-cases_pagination { display: none; }
-.use-cases_segment { position: relative; display: block; width: 24px; height: 2px; flex-grow: 0; flex-shrink: 0; border-top-width: 0px; border-right-width: 0px; border-bottom-width: 0px; border-left-width: 0px; border-top-left-radius: 1px; border-top-right-radius: 1px; border-bottom-left-radius: 1px; border-bottom-right-radius: 1px; background-color: rgba(111,110,107,.2); padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; cursor: pointer; }
-.use-cases_progress { width: 100%; height: 2px; background-color: #000; transform-origin: left center; transform: scaleX(0); }
+.use-cases_segment { position: relative; display: block; width: 1.5rem; height: 0.125rem; flex-grow: 0; flex-shrink: 0; border-top-width: 0rem; border-right-width: 0rem; border-bottom-width: 0rem; border-left-width: 0rem; border-top-left-radius: 0.0625rem; border-top-right-radius: 0.0625rem; border-bottom-left-radius: 0.0625rem; border-bottom-right-radius: 0.0625rem; background-color: rgba(111,110,107,.2); padding-top: 0rem; padding-right: 0rem; padding-bottom: 0rem; padding-left: 0rem; cursor: pointer; transition-property: flex-grow; transition-duration: 0.4s; transition-timing-function: ease; }
+.use-cases_progress { width: 100%; height: 0.125rem; background-color: #000; transform-origin: left center; transform: scaleX(0); }
 .use-cases_segment.is-active { flex-grow: 1; }
 @media screen and (max-width: 991px) {
-  .use-cases_section { padding-top: 64px; padding-bottom: 64px; padding-left: 24px; padding-right: 24px; }
-  .use-cases_heading { font-size: 48px; line-height: 48px; letter-spacing: -1.44px; }
-  .use-cases_header { margin-bottom: 48px; }
+  .use-cases_section { padding-top: 4rem; padding-bottom: 4rem; padding-left: 1.5rem; padding-right: 1.5rem; }
+  .use-cases_heading, .heading-style-h2.use-cases_heading { font-size: 3rem; line-height: 3rem; letter-spacing: -0.09rem; }
+  .use-cases_header { margin-bottom: 3rem; }
 }
 @media screen and (max-width: 767px) {
-  .use-cases_section { padding-left: 16px; padding-right: 16px; }
-  .use-cases_heading { font-size: 40px; line-height: 42px; letter-spacing: -1.2px; }
+  .use-cases_section { padding-left: 1rem; padding-right: 1rem; }
+  .use-cases_heading, .heading-style-h2.use-cases_heading { font-size: 2.5rem; line-height: 2.625rem; letter-spacing: -0.075rem; }
 }
 @media screen and (max-width: 479px) {
-  .use-cases_section { background-color: #fff; padding-top: 40px; padding-bottom: 40px; padding-left: 16px; padding-right: 16px; }
-  .use-cases_header { margin-bottom: 40px; }
-  .use-cases_heading { font-size: 36px; line-height: 37.8px; letter-spacing: -1.92px; }
-  .use-cases_swiper { height: 400px; }
-  .use-cases_cards { display: flex; column-gap: 0px; row-gap: 0px; height: 400px; }
-  .use-cases_slide { width: 100%; height: 400px; flex-shrink: 0; grid-column-start: auto; }
+  .use-cases_section { background-color: transparent; padding-top: 2.5rem; padding-bottom: 2.5rem; padding-left: 1rem; padding-right: 1rem; }
+  .use-cases_header { margin-bottom: 2.5rem; }
+  .use-cases_heading, .heading-style-h2.use-cases_heading { font-size: 2.25rem; line-height: 2.3625rem; letter-spacing: -0.12rem; }
+  .use-cases_swiper { height: 25rem; }
+  .use-cases_cards { display: flex; column-gap: 0rem; row-gap: 0rem; height: 25rem; }
+  .use-cases_slide { width: 100%; height: 25rem; flex-shrink: 0; grid-column-start: auto; }
   .use-cases_slide.is-wide { grid-column-start: auto; }
-  .use-cases_card { padding-top: 24px; padding-right: 24px; padding-bottom: 24px; padding-left: 24px; }
-  .use-cases_art.is-retail { left: -130px; top: -66.88px; }
-  .use-cases_art.is-fintech { left: -471px; top: -69.35px; }
-  .use-cases_art.is-payroll { left: -342px; top: -392.58px; }
-  .use-cases_art.is-marketplaces { left: -746.61px; top: -386.44px; }
+  .use-cases_card { padding-top: 1.5rem; padding-right: 1.5rem; padding-bottom: 1.5rem; padding-left: 1.5rem; }
+  .use-cases_art.is-retail { left: -8.125rem; top: -4.18rem; }
+  .use-cases_art.is-fintech { left: -29.4375rem; top: -4.334375rem; }
+  .use-cases_art.is-payroll { left: -21.375rem; top: -24.53625rem; }
+  .use-cases_art.is-marketplaces { left: -46.663125rem; top: -24.1525rem; }
   .use-cases_art-image.is-desktop { display: none; }
   .use-cases_art-image.is-mobile { display: block; }
-  .use-cases_pagination { display: flex; width: 220px; column-gap: 8px; margin-left: auto; margin-right: auto; margin-top: 40px; }
+  .use-cases_pagination { display: flex; width: 13.75rem; column-gap: 0.5rem; margin-left: auto; margin-right: auto; margin-top: 2.5rem; }
 }
 
 /* Figma exports preserve the grain texture exactly, including its clipping. */
-.use-cases_art { width: 100%; height: 100%; left: 0px; top: 0px; transform: none; }
-.use-cases_art.is-retail, .use-cases_art.is-fintech, .use-cases_art.is-payroll, .use-cases_art.is-marketplaces { width: 100%; height: 100%; left: 0px; top: 0px; }
-.use-cases_art-image, .use-cases_art-image.is-retail { width: 100%; height: auto; left: 0px; top: 0px; object-fit: contain; }
+.use-cases_art { width: 100%; height: 100%; left: 0rem; top: 0rem; transform: none; }
+.use-cases_art.is-retail, .use-cases_art.is-fintech, .use-cases_art.is-payroll, .use-cases_art.is-marketplaces { width: 100%; height: 100%; left: 0rem; top: 0rem; }
+.use-cases_art-image, .use-cases_art-image.is-retail { width: 100%; height: auto; left: 0rem; top: 0rem; object-fit: contain; }
 @media screen and (max-width: 479px) {
- .use-cases_slide { border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
- .use-cases_slide.swiper-slide-active { box-shadow: 0px 12px 16px rgba(0,0,0,.08); }
+ .use-cases_art-image.is-mobile { height: 100%; object-fit: cover; object-position: 50% 0%; }
+ .use-cases_slide { border-top-left-radius: 1.5rem; border-top-right-radius: 1.5rem; border-bottom-left-radius: 1.5rem; border-bottom-right-radius: 1.5rem; }
+ .use-cases_slide.swiper-slide-active { box-shadow: 0rem 0.75rem 1rem rgba(0,0,0,.08); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .use-cases_segment { transition-duration: 0s; }
 }
