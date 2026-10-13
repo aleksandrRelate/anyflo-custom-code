@@ -12,6 +12,9 @@
   overflow: hidden;
   overflow: clip; /* clip, not hidden: keeps position: sticky working inside (legal contents) */
   background: transparent;
+  /* own compositing layer: iOS Safari otherwise may paint the pinned (fixed)
+     hero above this card on legal pages, despite the z-index */
+  transform: translateZ(0);
 }
 .anyflo-footer-background {
   position: absolute;
