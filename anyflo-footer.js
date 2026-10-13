@@ -107,6 +107,10 @@
       }
     });
     var footerCard = footer.querySelector(':scope > .footer') || footer;
+    // Legal pages keep the whole text inside .footer: start the exit where the
+    // footer's own content (logo + form) begins, as on Home, not at the page top
+    var footerLayout = footerCard.querySelector('.footer_layout');
+    var exitStart = (footerLayout && footerLayout.closest('.padding-global')) || footerCard;
     var legalCard = Array.prototype.find.call(
       document.querySelectorAll('.home-card_wrapper'),
       function (el) { return !!el.querySelector('.legal_component'); }
@@ -263,7 +267,7 @@
         ease: 'none',
         onUpdate: render,
         scrollTrigger: {
-          trigger: footerCard,
+          trigger: exitStart,
           endTrigger: card,
           start: 'top 50%',
           end: 'bottom bottom',
