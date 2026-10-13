@@ -84,6 +84,13 @@
     padding-right: 2rem;
   }
 }
+/* legal pages on mobile: no shrink (anyflo-footer.js), so the usual 1rem gutter */
+@media (max-width: 479px) {
+  .footer_component > .footer.anyflo-footer-legal .padding-global {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
 @media (prefers-reduced-motion: reduce) {
   .anyflo-footer-video { display: none; }
 }
@@ -133,6 +140,13 @@
 }
 .anyflo-form-success-backdrop .form_input { width: 100%; }
 .anyflo-form-success-backdrop .is-textarea { color: #93928d; }
+/* the black submit turns into a dark smudge under the blur — keep it light like the fields */
+.anyflo-form-success-backdrop .button {
+  background: #f6f5f4;
+  color: #93928d;
+  border-color: transparent;
+  box-shadow: none;
+}
 .anyflo-form-success-checkbox {
   flex: 0 0 auto;
   background: #f6f5f4;

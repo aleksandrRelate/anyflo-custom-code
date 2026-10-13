@@ -111,6 +111,8 @@
     // footer's own content (logo + form) begins, as on Home, not at the page top
     var footerLayout = footerCard.querySelector('.footer_layout');
     var exitStart = (footerLayout && footerLayout.closest('.padding-global')) || footerCard;
+    var legalInFooter = !!footerCard.querySelector('.legal_component');
+    if (legalInFooter) footerCard.classList.add('anyflo-footer-legal');
     var legalCard = Array.prototype.find.call(
       document.querySelectorAll('.home-card_wrapper'),
       function (el) { return !!el.querySelector('.legal_component'); }
@@ -205,8 +207,11 @@
 
     A.mm.add({
       desktop: A.bp.desktop + ' and ' + A.bp.motion,
-      tablet: '(max-width: 991px) and ' + A.bp.motion
+      tablet: '(max-width: 991px) and ' + A.bp.motion,
+      mobile: '(max-width: 479px)'
     }, function (ctx) {
+      // legal pages on mobile: the footer stays full width, no shrink
+      if (legalInFooter && ctx.conditions.mobile) return;
       var desktop = ctx.conditions.desktop;
       var side = desktop ? '5.625%' : '1rem';                 // card side margin (90px / 1600 in Figma)
       // gradient strip under the card: on desktop it equals the side margin, so the
