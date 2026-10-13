@@ -124,30 +124,8 @@
   position: absolute;
   inset: -2.5rem -4rem;
   z-index: -1;
-  background: rgb(255 255 255 / 20%);
+  background: #fff url("https://aleksandrrelate.github.io/anyflo-custom-code/assets/form/form-success-blur.jpg") center / 100% 100% no-repeat;
   pointer-events: none;
-}
-.anyflo-form-success-backdrop {
-  position: relative;
-  z-index: -2;
-  filter: blur(1rem);
-  opacity: .8;
-  pointer-events: none;
-  user-select: none;
-}
-.anyflo-form-success-backdrop .form_input { width: 100%; }
-.anyflo-form-success-backdrop .is-textarea { color: #93928d; }
-/* the black submit turns into a dark smudge under the blur — keep it light like the fields */
-.anyflo-form-success-backdrop .button {
-  background: #f6f5f4;
-  color: #93928d;
-  border-color: transparent;
-  box-shadow: none;
-}
-.anyflo-form-success-checkbox {
-  flex: 0 0 auto;
-  background: #f6f5f4;
-  border-color: transparent;
 }
 .anyflo-form-success-card {
   position: absolute;
