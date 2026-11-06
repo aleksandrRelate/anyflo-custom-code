@@ -76,6 +76,63 @@
         }).observe(success, { attributes: true, attributeFilter: ['style', 'hidden'] });
       }
     });
+
+    /* #contact links: Webflow fixes the scroll target on click, then lazy images above
+       load and grow the page, so the scroll stops short of the footer. Follow it instead. */
+    function contactY() {
+      return footer.getBoundingClientRect().top + window.scrollY;
+    }
+    function goToContact() {
+      var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var settle, frame;
+      // No Lenis on mobile, and ScrollTrigger cuts native smooth scrolling short:
+      // ease by hand with Lenis' lerp, re-reading the target every frame
+      function step() {
+        var max = document.documentElement.scrollHeight - window.innerHeight;
+        var y = Math.min(contactY(), max);
+        var left = y - window.scrollY;
+        var arrived = reduced || Math.abs(left) < 1;
+        window.scrollTo(0, arrived ? y : window.scrollY + left * 0.14);
+        frame = arrived ? null : requestAnimationFrame(step);
+      }
+      function go() {
+        if (window.lenis) {
+          window.lenis.resize(); // Lenis debounces this, its old limit would clamp y
+          window.lenis.scrollTo(contactY(), { immediate: reduced });
+        } else if (!frame) {
+          step();
+        }
+        clearTimeout(settle);
+        settle = setTimeout(stop, 3000);
+      }
+      function stop() {
+        clearTimeout(settle);
+        cancelAnimationFrame(frame);
+        growth.disconnect();
+        window.removeEventListener('wheel', stop);
+        window.removeEventListener('touchmove', stop);
+      }
+      var growth = new ResizeObserver(go); // fires once on observe: that is the first scroll
+      document.querySelectorAll('img[loading="lazy"]').forEach(function (img) { img.loading = 'eager'; });
+      growth.observe(document.body);
+      window.addEventListener('wheel', stop, { passive: true });
+      window.addEventListener('touchmove', stop, { passive: true });
+    }
+    if (window.ResizeObserver) {
+      document.addEventListener('click', function (e) {
+        var link = e.target.closest && e.target.closest('a[href="#contact"]');
+        if (!link) return;
+        e.preventDefault();
+        e.stopPropagation(); // keep Webflow's one-shot anchor scroll out of it
+        if (location.hash !== '#contact') history.pushState(null, '', '#contact');
+        // as Webflow does: focus moves to the target, which also lets the navbar hide
+        footer.setAttribute('tabindex', '-1');
+        footer.style.outline = 'none';
+        footer.focus({ preventScroll: true });
+        goToContact();
+      }, true);
+    }
+
     var footerCard = footer.querySelector(':scope > .footer') || footer;
     // Legal pages keep the whole text inside .footer: start the exit where the
     // footer's own content (logo + form) begins, as on Home, not at the page top
