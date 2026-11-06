@@ -241,8 +241,8 @@
       if (legalInFooter && ctx.conditions.mobile) return;
       var desktop = ctx.conditions.desktop;
       var side = desktop ? '5.625%' : '1rem';                 // card side margin (90px / 1600 in Figma)
-      // Home: on wide screens the stopped card matches .home-card_wrapper (max-width 1440px)
-      if (desktop && !legalCard) side = 'max(' + side + ', (100% - 1440px) / 2)';
+      // on wide screens the stopped card matches .home-card_wrapper (max-width 1440px)
+      if (desktop) side = 'max(' + side + ', (100% - 1440px) / 2)';
       // gradient strip under the card: 5.625% on desktop (the Figma side margin),
       // whatever the card width; tablet/mobile keep 6rem
       var reveal = function () { return desktop ? card.offsetWidth * 0.05625 : rem(6); };
@@ -289,7 +289,7 @@
 
       var enter = legalCard && ScrollTrigger.create({
         trigger: card,
-        start: 'top 85%',
+        start: 'clamp(top 85%)',
         end: 'top top',
         onUpdate: function (self) { state.e = 1 - self.progress; render(); },
         onRefreshInit: measureEntry,
@@ -303,7 +303,7 @@
         scrollTrigger: {
           trigger: exitStart,
           endTrigger: card,
-          start: 'top 50%',
+          start: 'clamp(top 50%)',
           end: 'bottom bottom',
           scrub: 0.6,
           invalidateOnRefresh: true,
