@@ -82,7 +82,7 @@
     })();
 
     /* ------------------------------------------------------------------ *
-     * 2. HERO — intro on page load: background fade → heading → text → buttons
+     * 2. HERO — intro on page load: background fade → heading → text → buttons → trusted by
      * Hero + section reveals wait for web fonts: SplitText measures lines
      * with the real font, otherwise headings break into wrong lines.
      * ------------------------------------------------------------------ */
@@ -92,6 +92,7 @@
       var heading = document.querySelector('.home-hero_text .heading-style-h1');
       var subtext = document.querySelector('.home-hero_subtext');
       var buttons = gsap.utils.toArray('.home-hero_content .button-group .button');
+      var trusted = document.querySelector('.home-hero_trusted');
       var bg = document.querySelector('.home-hero_background');
       var reveal = A.createReveal();
       var tl = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.1 });
@@ -100,6 +101,7 @@
       reveal.revealText(tl, heading, 0.2);
       if (subtext) tl.from(subtext, { autoAlpha: 0, y: 20, duration: 1 }, 0.6);
       reveal.revealButtons(tl, buttons, 0.75);
+      if (trusted) tl.from(trusted, { autoAlpha: 0, y: 20, duration: 1 }, 0.9);
 
       return function () {
         tl.kill();
